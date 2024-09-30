@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: Opportunity-API
+  datasource:
+    url: jdbc:postgresql://localhost:5432/oppo
+    username: postgres
+    password: root
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update  # Use 'update' para ajustar o esquema automaticamente. Pode usar 'validate', 'create', ou 'create-drop' conforme necessário.
+    show-sql: true      # Para mostrar as queries SQL no console (opcional)
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
