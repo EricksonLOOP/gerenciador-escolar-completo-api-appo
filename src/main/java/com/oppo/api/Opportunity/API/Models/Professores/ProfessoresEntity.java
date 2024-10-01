@@ -23,7 +23,7 @@ public class ProfessoresEntity {
     private Long RG;
 
     @Enumerated(EnumType.STRING)
-    private TagsENUM tagsENUM;
+    private TagsENUM role;
     private String endereco;
 
     @ManyToMany

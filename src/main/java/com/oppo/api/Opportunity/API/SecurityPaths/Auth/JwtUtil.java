@@ -31,7 +31,7 @@ public class JwtUtil {
     }
 
     // Cria um token JWT com base nos dados da escola
-    public String createTokenEscolas(EscolasDTO escolasDTO) {
+    public String createToken(EscolasDTO escolasDTO) {
         Claims claims = Jwts.claims().setSubject(escolasDTO.cnpj());
         claims.put("nome", escolasDTO.nome());
         claims.put("role", escolasDTO.role());

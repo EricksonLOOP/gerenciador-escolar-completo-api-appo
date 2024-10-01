@@ -73,7 +73,7 @@ public class EscolaServicesImpl implements EscolaServices {
                 );
 
                 // Gera o token JWT
-                String token = jwtUtil.createTokenEscolas(escolasDTO);
+                String token = jwtUtil.createToken(escolasDTO);
 
                 // Retorna a escola e o token no corpo da resposta
                 return ResponseEntity.status(HttpStatus.OK).body(Map.of(

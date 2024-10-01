@@ -29,7 +29,7 @@ public class AlunosEntity {
     private String instagram;
 
     @Enumerated(EnumType.STRING)
-    private TagsENUM tagsENUM;
+    private TagsENUM role;
 
     @ManyToMany
     @JoinTable(

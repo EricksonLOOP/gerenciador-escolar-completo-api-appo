@@ -15,6 +15,7 @@ public class AdministradorOppoEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
+    private String senha;
     private String nome;
     private String cpf;
     private String rg;
