@@ -20,5 +20,9 @@ public class EscolaController {
     public ResponseEntity<?> createEscola(@RequestBody EscolasDTO escolasDTO) {
         return escolaServices.create(escolasDTO);
     }
+    @PostMapping("/login")
+    public ResponseEntity<?> loginEscola(@RequestBody EscolasDTO escolasDTO){
+        return escolaServices.login(escolasDTO);
+    }
 }
 

@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class EscolaServicesImpl implements EscolaServices {
 
@@ -18,8 +20,8 @@ public class EscolaServicesImpl implements EscolaServices {
     public ResponseEntity<?> create(EscolasDTO escolasDTO) {
         try {
             // Verifica se a escola já existe pelo CNPJ
-            EscolasEntity encontrarEscola = escolasRepository.findByCNPJ(escolasDTO.CNPJ());
-            if (encontrarEscola != null) {
+            Optional<EscolasEntity> encontrarEscola = escolasRepository.findByCNPJ(escolasDTO.CNPJ());
+            if (encontrarEscola.isPresent()) {
                 return ResponseEntity.status(HttpStatus.CONFLICT).body("CNPJ já registrado. Não é possível criar uma escola com este CNPJ");
             }
 
@@ -38,6 +40,19 @@ public class EscolaServicesImpl implements EscolaServices {
         } catch (Exception e) {
             // Aqui você pode fazer um log do erro para depuração
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao criar a escola: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public ResponseEntity<?> login(EscolasDTO escolasDTO) {
+        try {
+            Optional<EscolasEntity> optEscola = escolasRepository.findByCNPJ(escolasDTO.CNPJ());
+            if (optEscola.isPresent() && optEscola.get().getSenha().equals(escolasDTO.senha())){
+                return ResponseEntity.status(HttpStatus.OK).body(optEscola);
+            }
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("CNPJ ou senha estão errados, ou o usuário nao existe.");
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro interno ao iniciar sessão");
         }
     }
 }

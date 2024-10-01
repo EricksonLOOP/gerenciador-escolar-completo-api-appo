@@ -8,4 +8,6 @@ import org.springframework.stereotype.Service;
 
 public interface EscolaServices {
      ResponseEntity<?> create(EscolasDTO escolasDTO);
+
+    ResponseEntity<?> login(EscolasDTO escolasDTO);
 }
