@@ -8,7 +8,7 @@ spring:
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
-      ddl-auto: update  # Use 'update' para ajustar o esquema automaticamente. Pode usar 'validate', 'create', ou 'create-drop' conforme necessário.
+      ddl-auto: update  # Use 'update' para ajustar o esquema automaticamente. Pode usar 'validate', 'create', ou 'create-drop' conforme necessï¿½rio.
     show-sql: true      # Para mostrar as queries SQL no console (opcional)
     properties:
       hibernate:
