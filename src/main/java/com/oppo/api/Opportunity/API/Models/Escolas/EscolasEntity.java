@@ -16,7 +16,7 @@ public class EscolasEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
     private String nome;
-    private Long CNPJ;
+    private String CNPJ;
     private String senha;
     private String endereco;
     private String diretor;
