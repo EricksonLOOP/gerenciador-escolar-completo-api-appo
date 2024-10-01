@@ -20,7 +20,7 @@ public class EscolaServicesImpl implements EscolaServices {
     public ResponseEntity<?> create(EscolasDTO escolasDTO) {
         try {
             // Verifica se a escola já existe pelo CNPJ
-            Optional<EscolasEntity> encontrarEscola = escolasRepository.findByCNPJ(escolasDTO.CNPJ());
+            Optional<EscolasEntity> encontrarEscola = escolasRepository.findByCNPJ(escolasDTO.cnpj());
             if (encontrarEscola.isPresent()) {
                 return ResponseEntity.status(HttpStatus.CONFLICT).body("CNPJ já registrado. Não é possível criar uma escola com este CNPJ");
             }
@@ -28,7 +28,7 @@ public class EscolaServicesImpl implements EscolaServices {
             // Cria uma nova entidade de escola a partir do DTO
             EscolasEntity escola = new EscolasEntity();
             escola.setNome(escolasDTO.nome());
-            escola.setCNPJ(escolasDTO.CNPJ());
+            escola.setCNPJ(escolasDTO.cnpj());
             escola.setSenha(escolasDTO.senha());
             escola.setEndereco(escolasDTO.endereco());
             escola.setDiretor(escolasDTO.diretor());
@@ -46,13 +46,34 @@ public class EscolaServicesImpl implements EscolaServices {
     @Override
     public ResponseEntity<?> login(EscolasDTO escolasDTO) {
         try {
-            Optional<EscolasEntity> optEscola = escolasRepository.findByCNPJ(escolasDTO.CNPJ());
+            Optional<EscolasEntity> optEscola = escolasRepository.findByCNPJ(escolasDTO.cnpj());
             if (optEscola.isPresent() && optEscola.get().getSenha().equals(escolasDTO.senha())){
                 return ResponseEntity.status(HttpStatus.OK).body(optEscola);
             }
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("CNPJ ou senha estão errados, ou o usuário nao existe.");
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro interno ao iniciar sessão");
+        }
+    }
+
+    @Override
+    public ResponseEntity<?> update(EscolasDTO escolasDTO) {
+        try{
+            Optional<EscolasEntity> optEscola = escolasRepository.findByCNPJ(escolasDTO.cnpj());
+            if (optEscola.isPresent()){
+               EscolasEntity escola = optEscola.get();
+               escola.setNome(escolasDTO.nome());
+               escola.setCNPJ(escolasDTO.cnpj());
+               escola.setEndereco(escolasDTO.endereco());
+               escola.setSenha(escolasDTO.senha());
+               escola.setRole(escolasDTO.role());
+               return ResponseEntity.status(HttpStatus.OK).body(escolasRepository.save(escola));
+            }
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Escola não encontrada.");
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro interno ao atualizar escola.");
+
         }
     }
 }

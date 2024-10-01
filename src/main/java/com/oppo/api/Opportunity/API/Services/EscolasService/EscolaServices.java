@@ -10,4 +10,6 @@ public interface EscolaServices {
      ResponseEntity<?> create(EscolasDTO escolasDTO);
 
     ResponseEntity<?> login(EscolasDTO escolasDTO);
+
+    ResponseEntity<?> update(EscolasDTO escolasDTO);
 }

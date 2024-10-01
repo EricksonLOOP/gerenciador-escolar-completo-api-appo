@@ -22,7 +22,7 @@ public class EscolasEntity {
     private String diretor;
 
     @Enumerated(EnumType.STRING)
-    private TagsENUM tagsENUM;
+    private TagsENUM role;
 
     @OneToMany(mappedBy = "escola", cascade = CascadeType.ALL)
     private List<AlunosEntity> alunos;

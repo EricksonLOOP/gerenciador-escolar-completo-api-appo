@@ -4,10 +4,7 @@ import com.oppo.api.Opportunity.API.DTOs.EscolasDTOs.EscolasDTO;
 import com.oppo.api.Opportunity.API.Services.EscolasService.EscolaServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/escolas")
@@ -23,6 +20,10 @@ public class EscolaController {
     @PostMapping("/login")
     public ResponseEntity<?> loginEscola(@RequestBody EscolasDTO escolasDTO){
         return escolaServices.login(escolasDTO);
+    }
+    @PutMapping("/update")
+    public ResponseEntity<?> updateEscola(@RequestBody EscolasDTO escolasDTO){
+        return  escolaServices.update(escolasDTO);
     }
 }
 
