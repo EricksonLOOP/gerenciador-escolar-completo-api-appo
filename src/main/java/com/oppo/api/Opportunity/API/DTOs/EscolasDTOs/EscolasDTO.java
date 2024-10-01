@@ -1,6 +1,8 @@
 package com.oppo.api.Opportunity.API.DTOs.EscolasDTOs;
 
 
+import com.oppo.api.Opportunity.API.Models.Alunos.AlunosEntity;
+import com.oppo.api.Opportunity.API.Models.Professores.ProfessoresEntity;
 import com.oppo.api.Opportunity.API.Models.TagsENUM;
 import org.antlr.v4.runtime.misc.NotNull;
 
@@ -12,6 +14,8 @@ public record EscolasDTO(
         @NotNull String senha,
         @NotNull String endereco,
         @NotNull String diretor,
-        @NotNull TagsENUM role
+        @NotNull TagsENUM role,
+        AlunosEntity alunosEntity,
+        ProfessoresEntity professoresEntity
         ) implements Serializable {
 }

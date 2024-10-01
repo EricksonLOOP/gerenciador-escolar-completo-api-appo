@@ -12,4 +12,15 @@ public interface EscolaServices {
     ResponseEntity<?> login(EscolasDTO escolasDTO);
 
     ResponseEntity<?> update(EscolasDTO escolasDTO);
+
+    ResponseEntity<?> addAluno(EscolasDTO escolasDTO);
+
+    ResponseEntity<?> removeAluno(EscolasDTO escolasDTO);
+
+    ResponseEntity<?> listarAluno(EscolasDTO escolasDTO);
+
+    ResponseEntity<?> addProfessor(EscolasDTO escolasDTO);
+    ResponseEntity<?> removeProfessor(EscolasDTO escolasDTO);
+
+    ResponseEntity<?> listarProfessor(EscolasDTO escolasDTO);
 }

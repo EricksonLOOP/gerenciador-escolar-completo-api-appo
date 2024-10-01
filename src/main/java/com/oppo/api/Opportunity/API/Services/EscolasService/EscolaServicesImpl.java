@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
 import java.util.Optional;
 
 @Service
@@ -50,7 +49,7 @@ public class EscolaServicesImpl implements EscolaServices {
             if (optEscola.isPresent() && optEscola.get().getSenha().equals(escolasDTO.senha())){
                 return ResponseEntity.status(HttpStatus.OK).body(optEscola);
             }
-            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("CNPJ ou senha estão errados, ou o usuário nao existe.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("CNPJ ou senha estão errados, ou o usuário nao existe.");
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro interno ao iniciar sessão");
         }
@@ -69,11 +68,94 @@ public class EscolaServicesImpl implements EscolaServices {
                escola.setRole(escolasDTO.role());
                return ResponseEntity.status(HttpStatus.OK).body(escolasRepository.save(escola));
             }
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Escola não encontrada.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Escola não encontrada.");
 
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro interno ao atualizar escola.");
 
+        }
+    }
+
+    @Override
+    public ResponseEntity<?> addAluno(EscolasDTO escolasDTO) {
+        try {
+            Optional<EscolasEntity> optEscola = escolasRepository.findByCNPJ(escolasDTO.cnpj());
+            if (optEscola.isPresent()){
+                EscolasEntity escola = optEscola.get();
+                return  ResponseEntity.status(HttpStatus.OK).body("Aluno adicionado: "+escola.getAlunos().add(escolasDTO.alunosEntity()));
+            }
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Escola não encontrada");
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public ResponseEntity<?> removeAluno(EscolasDTO escolasDTO) {
+        try {
+            Optional<EscolasEntity> optEscola = escolasRepository.findByCNPJ(escolasDTO.cnpj());
+            if (optEscola.isPresent()){
+                EscolasEntity escola = optEscola.get();
+                return  ResponseEntity.status(HttpStatus.OK).body("Aluno removido: "+escola.getAlunos().remove(escolasDTO.alunosEntity()));
+            }
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Escola não encontrada");
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public ResponseEntity<?> listarAluno(EscolasDTO escolasDTO) {
+        try {
+            Optional<EscolasEntity> optEscola = escolasRepository.findByCNPJ(escolasDTO.cnpj());
+            if (optEscola.isPresent()){
+                EscolasEntity escola = optEscola.get();
+                return  ResponseEntity.status(HttpStatus.OK).body("Lista de Alunos: "+escola.getAlunos());
+            }
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Escola não encontrada");
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public ResponseEntity<?> addProfessor(EscolasDTO escolasDTO) {
+        try {
+            Optional<EscolasEntity> optEscola = escolasRepository.findByCNPJ(escolasDTO.cnpj());
+            if (optEscola.isPresent()){
+                EscolasEntity escola = optEscola.get();
+                return  ResponseEntity.status(HttpStatus.OK).body("Professor adicionado: "+escola.getProfessores().add(escolasDTO.professoresEntity()));
+            }
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Escola não encontrada");
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+    @Override
+    public ResponseEntity<?> removeProfessor(EscolasDTO escolasDTO) {
+        try {
+            Optional<EscolasEntity> optEscola = escolasRepository.findByCNPJ(escolasDTO.cnpj());
+            if (optEscola.isPresent()){
+                EscolasEntity escola = optEscola.get();
+                return  ResponseEntity.status(HttpStatus.OK).body("Professor removido: "+escola.getProfessores().remove(escolasDTO.professoresEntity()));
+            }
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Escola não encontrada");
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public ResponseEntity<?> listarProfessor(EscolasDTO escolasDTO) {
+        try {
+            Optional<EscolasEntity> optEscola = escolasRepository.findByCNPJ(escolasDTO.cnpj());
+            if (optEscola.isPresent()){
+                EscolasEntity escola = optEscola.get();
+                return  ResponseEntity.status(HttpStatus.OK).body("Lista de Professores: "+escola.getProfessores());
+            }
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Escola não encontrada");
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 }

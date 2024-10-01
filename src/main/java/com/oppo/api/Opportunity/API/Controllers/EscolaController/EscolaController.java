@@ -21,9 +21,33 @@ public class EscolaController {
     public ResponseEntity<?> loginEscola(@RequestBody EscolasDTO escolasDTO){
         return escolaServices.login(escolasDTO);
     }
+    @GetMapping("/aluno/listar")
+    public ResponseEntity<?> listarAluno(@RequestBody EscolasDTO escolasDTO){
+        return escolaServices.listarAluno(escolasDTO);
+    }
     @PutMapping("/update")
     public ResponseEntity<?> updateEscola(@RequestBody EscolasDTO escolasDTO){
         return  escolaServices.update(escolasDTO);
+    }
+    @PutMapping("/aluno/add")
+    public ResponseEntity<?> addAluno(@RequestBody EscolasDTO escolasDTO){
+        return escolaServices.addAluno(escolasDTO);
+    }
+    @PutMapping("/aluno/remove")
+    public ResponseEntity<?> removeAluno(@RequestBody EscolasDTO escolasDTO){
+        return escolaServices.removeAluno(escolasDTO);
+    }
+    @PutMapping("/professor/add")
+    public ResponseEntity<?> addProfessor(@RequestBody EscolasDTO escolasDTO){
+        return escolaServices.addProfessor(escolasDTO);
+    }
+    @PutMapping("/professor/remove")
+    public ResponseEntity<?> removeProfessor(@RequestBody EscolasDTO escolasDTO){
+        return escolaServices.removeProfessor(escolasDTO);
+    }
+    @GetMapping("/professor/listar")
+    public ResponseEntity<?> listarProfessor(@RequestBody EscolasDTO escolasDTO){
+        return escolaServices.listarProfessor(escolasDTO);
     }
 }
 
