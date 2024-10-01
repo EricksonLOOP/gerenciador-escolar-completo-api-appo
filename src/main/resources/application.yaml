@@ -2,9 +2,9 @@ spring:
   application:
     name: Opportunity-API
   datasource:
-    url: jdbc:postgresql://localhost:5432/oppo
+    url: jdbc:postgresql://postgres:tsCysGadzZoOVXQamrxIlOCjAjrcKLmI@postgres.railway.internal:5432/railway
     username: postgres
-    password: root
+    password: tsCysGadzZoOVXQamrxIlOCjAjrcKLmI
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
