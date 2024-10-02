@@ -1,6 +1,9 @@
 package com.oppo.api.Opportunity.API.SecurityPaths.Auth;
 
-import com.oppo.api.Opportunity.API.DTOs.EscolasDTOs.EscolasDTO;
+import com.oppo.api.Opportunity.API.Models.AdmnistradorOppo.AdministradorOppoEntity;
+import com.oppo.api.Opportunity.API.Models.Alunos.AlunosEntity;
+import com.oppo.api.Opportunity.API.Models.Escolas.EscolasEntity;
+import com.oppo.api.Opportunity.API.Models.Professores.ProfessoresEntity;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.HttpServletRequest;
@@ -8,7 +11,6 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
-import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -31,22 +33,50 @@ public class JwtUtil {
     }
 
     // Cria um token JWT com base nos dados da escola
-    public String createToken(EscolasDTO escolasDTO) {
-        Claims claims = Jwts.claims().setSubject(escolasDTO.cnpj());
-        claims.put("nome", escolasDTO.nome());
-        claims.put("role", escolasDTO.role());
-        claims.put("cnpj", escolasDTO.cnpj());
 
+    public String createToken(Object validado) {
+        Claims claims = Jwts.claims();
+
+        // Definir o subject com base no tipo do objeto validado
+        if (validado instanceof EscolasEntity escola) {
+            claims.setSubject(escola.getCNPJ());
+            claims.put("id", escola.getId());
+            claims.put("senha", escola.getSenha());
+            claims.put("nome", escola.getNome());
+            claims.put("role", "ESCOLA");
+        } else if (validado instanceof AlunosEntity aluno) {
+            claims.setSubject(aluno.getCPF());
+            claims.put("id", aluno.getId());
+            claims.put("senha", aluno.getSenha());
+            claims.put("nome", aluno.getNome());
+            claims.put("role", "ALUNO");
+        } else if (validado instanceof ProfessoresEntity professor) {
+            claims.setSubject(professor.getCPF());
+            claims.put("id", professor.getId());
+            claims.put("senha", professor.getSenha());
+            claims.put("nome", professor.getNome());
+            claims.put("role", "PROFESSOR");
+        } else if (validado instanceof AdministradorOppoEntity admin) {
+            claims.setSubject(admin.getCPF());
+            claims.put("id", admin.getId());
+            claims.put("senha", admin.getSenha());
+            claims.put("nome", admin.getNome());
+            claims.put("role", "ADMIN");
+        }
+
+        // Data de criação do token e data de expiração
         Date tokenCreateTime = new Date();
         Date tokenExpirationTime = new Date(tokenCreateTime.getTime() + accessTokenValidity);
 
+        // Criar o token JWT
         return Jwts.builder()
                 .setClaims(claims)
-                .setIssuedAt(tokenCreateTime) // Data de criação do token
-                .setExpiration(tokenExpirationTime) // Validade do token
-                .signWith(secret_key) // Assinatura do token
+                .setIssuedAt(tokenCreateTime)  // Data de criação do token
+                .setExpiration(tokenExpirationTime)  // Validade do token
+                .signWith(secret_key, SignatureAlgorithm.HS256)  // Assinatura com chave secreta e algoritmo HS256
                 .compact();
     }
+
 
     // Extrai as claims do token JWT
     private Claims parseJwtClaims(String token) {

@@ -23,9 +23,9 @@ public class AlunosEntity {
     private String endereco;
     private String email;
     private String senha;
-    private Long tel;
-    private Long CPF;
-    private Long rg;
+    private String tel;
+    private String CPF;
+    private String rg;
     private String instagram;
 
     @Enumerated(EnumType.STRING)

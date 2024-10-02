@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -17,6 +19,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Component
@@ -34,19 +37,29 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         Map<String, Object> errorDetails = new HashMap<>();
         try {
             String accesToken = jwtUtil.resolveToken(request);
-            if (accesToken==null){
+            if (accesToken == null) {
                 filterChain.doFilter(request, response);
                 return;
             }
-            System.out.println("token : "+accesToken);
-            Claims claims = jwtUtil.resolveClaims(request);
-            if (claims != null && jwtUtil.validateClaims(claims)){
-                String cnpj = claims.getSubject();
-                System.out.println("cnpj : "+cnpj);
-                Authentication authentication =
-                        new UsernamePasswordAuthenticationToken(cnpj, "", new ArrayList<>());
-                SecurityContextHolder.getContext().setAuthentication(authentication);
 
+            System.out.println("token : " + accesToken);
+            Claims claims = jwtUtil.resolveClaims(request);
+            if (claims != null && jwtUtil.validateClaims(claims)) {
+                String user = claims.getSubject();
+                String role = claims.get("role", String.class);
+
+                System.out.println("cnpj : " + user);
+                System.out.println("role : " + role);
+
+                // Crie a lista de authorities a partir da role extraída do token
+                List<GrantedAuthority> authorities = new ArrayList<>();
+                authorities.add(new SimpleGrantedAuthority("ROLE_"+role));
+
+                // Autenticação com CNPJ e role (authorities)
+                Authentication authentication = new UsernamePasswordAuthenticationToken(user, null, authorities);
+
+                // Coloque a autenticação no contexto de segurança
+                SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         } catch (Exception e) {
             errorDetails.put("message", "Authentication Error");
@@ -55,6 +68,8 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             response.setContentType(MediaType.APPLICATION_JSON_VALUE);
             mapper.writeValue(response.getWriter(), errorDetails);
         }
+
         filterChain.doFilter(request, response);
     }
+
 }

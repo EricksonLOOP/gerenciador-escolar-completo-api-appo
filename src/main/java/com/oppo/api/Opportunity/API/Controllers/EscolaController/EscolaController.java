@@ -17,13 +17,13 @@ public class EscolaController {
     public ResponseEntity<?> createEscola(@RequestBody EscolasDTO escolasDTO) {
         return escolaServices.create(escolasDTO);
     }
-    @PostMapping("/login")
-    public ResponseEntity<?> loginEscola(@RequestBody EscolasDTO escolasDTO){
-        return escolaServices.login(escolasDTO);
-    }
     @GetMapping("/aluno/listar")
     public ResponseEntity<?> listarAluno(@RequestBody EscolasDTO escolasDTO){
         return escolaServices.listarAluno(escolasDTO);
+    }
+    @GetMapping("/hello")
+    public String helloWord(){
+        return "Hello, world!";
     }
     @PutMapping("/update")
     public ResponseEntity<?> updateEscola(@RequestBody EscolasDTO escolasDTO){

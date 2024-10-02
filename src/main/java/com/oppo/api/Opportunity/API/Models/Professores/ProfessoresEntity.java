@@ -19,8 +19,8 @@ public class ProfessoresEntity {
     private String nome;
     private String senha;
     private String email;
-    private Long CPF;
-    private Long RG;
+    private String CPF;
+    private String rg;
 
     @Enumerated(EnumType.STRING)
     private TagsENUM role;

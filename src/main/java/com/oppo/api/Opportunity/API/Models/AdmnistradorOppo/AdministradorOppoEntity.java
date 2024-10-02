@@ -17,7 +17,7 @@ public class AdministradorOppoEntity {
     private UUID id;
     private String senha;
     private String nome;
-    private String cpf;
+    private String CPF;
     private String rg;
     private TagsENUM role;
 

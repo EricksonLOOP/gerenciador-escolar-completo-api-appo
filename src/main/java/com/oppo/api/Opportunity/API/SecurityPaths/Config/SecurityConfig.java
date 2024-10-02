@@ -35,12 +35,10 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())  // Desativa CSRF
                 .authorizeRequests(authorize -> authorize
-                        .requestMatchers("/api/**/login").permitAll()
+                        .requestMatchers("/api/auth/login", "api/admin/**").permitAll()
                         .requestMatchers("/api/escolas/**").hasAnyRole("ESCOLA", "ADMIN")
                         .requestMatchers("/api/professores/**").hasAnyRole("PROFESSOR", "ADMIN")
-                        .requestMatchers("/api/escolas/**").hasAnyRole("ESCOLA", "ADMIN")
                         .requestMatchers("/api/alunos/**").hasAnyRole("ALUNO", "ADMIN")
-                        .requestMatchers("/api/**").hasRole("ADMIN")
                         .anyRequest().authenticated()  // Exige autenticação para qualquer outra rota
                 )
                 .sessionManagement(session -> session
