@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class AdministradorServiceImpl  implements AdministradorService{
@@ -33,6 +34,21 @@ public class AdministradorServiceImpl  implements AdministradorService{
                 return ResponseEntity.status(HttpStatus.CREATED).body("Administrador Criado: "+admRepository.save(adm));
             }
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Administrador já existente.");
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public ResponseEntity<?> update(UUID id, AdminDTO adminDTO) {
+        try {
+            Optional<AdministradorOppoEntity> administradorOppo = admRepository.findById(id);
+            if (administradorOppo.isPresent()){
+                AdministradorOppoEntity administradorOppoEntity = administradorOppo.get();
+                administradorOppoEntity.setRole(adminDTO.role());
+                return ResponseEntity.status(HttpStatus.OK).body("Usuário atualizado com sucesso! " + admRepository.save(administradorOppoEntity));
+            }
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Usuário não existe");
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
