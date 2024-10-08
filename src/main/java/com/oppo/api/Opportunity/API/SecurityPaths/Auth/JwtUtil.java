@@ -1,9 +1,9 @@
 package com.oppo.api.Opportunity.API.SecurityPaths.Auth;
 
-import com.oppo.api.Opportunity.API.Models.AdmnistradorOppo.AdministradorOppoEntity;
-import com.oppo.api.Opportunity.API.Models.Alunos.AlunosEntity;
-import com.oppo.api.Opportunity.API.Models.Escolas.EscolasEntity;
-import com.oppo.api.Opportunity.API.Models.Professores.ProfessoresEntity;
+import com.oppo.api.Opportunity.API.Entitys.AdmnistradorOppoEntity.AdministradorOppoEntity;
+import com.oppo.api.Opportunity.API.Entitys.AlunosEntity.AlunosEntity;
+import com.oppo.api.Opportunity.API.Entitys.EscolasEntity.EscolasEntity;
+import com.oppo.api.Opportunity.API.Entitys.ProfessoresEntity.ProfessoresEntity;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.HttpServletRequest;
@@ -20,7 +20,7 @@ public class JwtUtil {
 
     // Gera uma chave segura para assinatura HS256
     private final SecretKey secret_key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
-    private long accessTokenValidity = TimeUnit.HOURS.toMillis(1); // Validade de 1 hora
+    private final long accessTokenValidity = TimeUnit.HOURS.toMillis(1); // Validade de 1 hora
 
     private final JwtParser jwtParser;
     private final String TOKEN_HEADER = "Authorization";
@@ -39,28 +39,28 @@ public class JwtUtil {
 
         // Definir o subject com base no tipo do objeto validado
         if (validado instanceof EscolasEntity escola) {
-            claims.setSubject(escola.getCNPJ());
+            claims.setSubject(escola.getInformacoesEscola().getCnpj());
             claims.put("id", escola.getId());
             claims.put("senha", escola.getSenha());
-            claims.put("nome", escola.getNome());
+            claims.put("nome", escola.getInformacoesEscola().getNome());
             claims.put("role", "ESCOLA");
         } else if (validado instanceof AlunosEntity aluno) {
-            claims.setSubject(aluno.getCPF());
+            claims.setSubject(aluno.getInformacoesPessoais().getCpf());
             claims.put("id", aluno.getId());
             claims.put("senha", aluno.getSenha());
-            claims.put("nome", aluno.getNome());
+            claims.put("nome", aluno.getInformacoesPessoais().getNome());
             claims.put("role", "ALUNO");
         } else if (validado instanceof ProfessoresEntity professor) {
-            claims.setSubject(professor.getCPF());
+            claims.setSubject(professor.getInformacoesPessoais().getCpf());
             claims.put("id", professor.getId());
             claims.put("senha", professor.getSenha());
-            claims.put("nome", professor.getNome());
+            claims.put("nome", professor.getInformacoesPessoais().getNome());
             claims.put("role", "PROFESSOR");
         } else if (validado instanceof AdministradorOppoEntity admin) {
-            claims.setSubject(admin.getCPF());
+            claims.setSubject(admin.getInformacoesPessoais().getCpf());
             claims.put("id", admin.getId());
             claims.put("senha", admin.getSenha());
-            claims.put("nome", admin.getNome());
+            claims.put("nome", admin.getInformacoesPessoais().getNome());
             claims.put("role", "ADMIN");
         }
 

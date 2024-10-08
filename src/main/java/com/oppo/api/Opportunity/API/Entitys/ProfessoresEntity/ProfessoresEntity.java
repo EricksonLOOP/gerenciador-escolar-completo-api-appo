@@ -1,9 +1,13 @@
-package com.oppo.api.Opportunity.API.Models.Professores;
+package com.oppo.api.Opportunity.API.Entitys.ProfessoresEntity;
 
-import com.oppo.api.Opportunity.API.Models.Escolas.EscolasEntity;
-import com.oppo.api.Opportunity.API.Models.Materias.MateriasEntity;
+import com.oppo.api.Opportunity.API.Entitys.EscolasEntity.EscolasEntity;
+import com.oppo.api.Opportunity.API.Entitys.MateriasEntity.MateriasEntity;
+import com.oppo.api.Opportunity.API.Models.ContatoModel.ContatoModel;
+import com.oppo.api.Opportunity.API.Models.EnderecoModel.EnderecoModel;
+import com.oppo.api.Opportunity.API.Models.InformacoesPessoaisModel.InformacoesPessoaisModel;
+import com.oppo.api.Opportunity.API.Models.InformacoesProfissionaisModel.InformacoesProfissionaisModel;
 import com.oppo.api.Opportunity.API.Models.TagsENUM;
-import com.oppo.api.Opportunity.API.Models.Turmas.TurmasEntity;
+import com.oppo.api.Opportunity.API.Entitys.TurmasEntity.TurmasEntity;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -16,15 +20,18 @@ public class ProfessoresEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
-    private String nome;
     private String senha;
-    private String email;
-    private String CPF;
-    private String rg;
+    @Embedded
+    private InformacoesPessoaisModel informacoesPessoais;
+    @Embedded
+    private InformacoesProfissionaisModel iformacoesProfissionais;
+    @Embedded
+    private ContatoModel contatoModel;
+    @Embedded
+    private EnderecoModel endereco;
 
     @Enumerated(EnumType.STRING)
     private TagsENUM role;
-    private String endereco;
 
     @ManyToMany
     @JoinTable(

@@ -1,7 +1,7 @@
-package com.oppo.api.Opportunity.API.Models.Turmas;
+package com.oppo.api.Opportunity.API.Entitys.TurmasEntity;
 
-import com.oppo.api.Opportunity.API.Models.Alunos.AlunosEntity;
-import com.oppo.api.Opportunity.API.Models.Professores.ProfessoresEntity;
+import com.oppo.api.Opportunity.API.Entitys.AlunosEntity.AlunosEntity;
+import com.oppo.api.Opportunity.API.Entitys.ProfessoresEntity.ProfessoresEntity;
 import jakarta.persistence.*;
 import lombok.Data;
 

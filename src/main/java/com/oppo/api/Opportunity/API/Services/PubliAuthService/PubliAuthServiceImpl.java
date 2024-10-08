@@ -1,17 +1,16 @@
 package com.oppo.api.Opportunity.API.Services.PubliAuthService;
 
-import com.oppo.api.Opportunity.API.Models.AdmnistradorOppo.AdministradorOppoEntity;
-import com.oppo.api.Opportunity.API.Models.Alunos.AlunosEntity;
-import com.oppo.api.Opportunity.API.Models.Escolas.EscolasEntity;
+import com.oppo.api.Opportunity.API.Entitys.AdmnistradorOppoEntity.AdministradorOppoEntity;
+import com.oppo.api.Opportunity.API.Entitys.AlunosEntity.AlunosEntity;
+import com.oppo.api.Opportunity.API.Entitys.EscolasEntity.EscolasEntity;
 import com.oppo.api.Opportunity.API.Models.LoginModel.LoginModel;
-import com.oppo.api.Opportunity.API.Models.Professores.ProfessoresEntity;
+import com.oppo.api.Opportunity.API.Entitys.ProfessoresEntity.ProfessoresEntity;
 import com.oppo.api.Opportunity.API.Repositories.AdministradorRepository.AdmRepository;
 import com.oppo.api.Opportunity.API.Repositories.AlunosRepository.AlunosRepository;
 import com.oppo.api.Opportunity.API.Repositories.EscolasRespository.EscolasRepository;
 import com.oppo.api.Opportunity.API.Repositories.ProfessoresRespository.ProfessorRepository;
 import com.oppo.api.Opportunity.API.SecurityPaths.Auth.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -47,23 +46,23 @@ public class PubliAuthServiceImpl implements PubliAuthService {
 
         try {
             Object validado = fazerValidacao(loginModel.getUsuario(), loginModel.getSenha());
-            Authentication authentication = null;
+            Authentication authentication;
 
             if (validado instanceof EscolasEntity escola) {
                 authentication = authenticationManager.authenticate(
-                        new UsernamePasswordAuthenticationToken(escola.getCNPJ(), loginModel.getSenha())
+                        new UsernamePasswordAuthenticationToken(escola.getInformacoesEscola().getCnpj(), loginModel.getSenha())
                 );
             } else if (validado instanceof AlunosEntity aluno) {
                 authentication = authenticationManager.authenticate(
-                        new UsernamePasswordAuthenticationToken(aluno.getCPF(), loginModel.getSenha())
+                        new UsernamePasswordAuthenticationToken(aluno.getInformacoesPessoais().getCpf(), loginModel.getSenha())
                 );
             } else if (validado instanceof ProfessoresEntity professor) {
                 authentication = authenticationManager.authenticate(
-                        new UsernamePasswordAuthenticationToken(professor.getCPF(), loginModel.getSenha())
+                        new UsernamePasswordAuthenticationToken(professor.getInformacoesPessoais().getCpf(), loginModel.getSenha())
                 );
             } else if (validado instanceof AdministradorOppoEntity admin) {
                 authentication = authenticationManager.authenticate(
-                        new UsernamePasswordAuthenticationToken(admin.getCPF(), loginModel.getSenha())
+                        new UsernamePasswordAuthenticationToken(admin.getInformacoesPessoais().getCpf(), loginModel.getSenha())
                 );
             } else {
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Usuário inválido.");
@@ -85,10 +84,10 @@ public class PubliAuthServiceImpl implements PubliAuthService {
         }
    }
     public Object fazerValidacao(String user, String senha) {
-        Optional<EscolasEntity> escola = escolasRepository.findByCNPJ(user);
-        Optional<AlunosEntity> aluno = alunosRepository.findByCPF(user);
-        Optional<ProfessoresEntity> professor = professorRepository.findByCPF(user);
-        Optional<AdministradorOppoEntity> administradorOppo = admRepository.findByCPF(user);
+        Optional<EscolasEntity> escola = escolasRepository.findByInformacoesEscola_Cnpj(user);
+        Optional<AlunosEntity> aluno = alunosRepository.findByInformacoesPessoais_Cpf(user);
+        Optional<ProfessoresEntity> professor = professorRepository.findByInformacoesPessoais_Cpf(user);
+        Optional<AdministradorOppoEntity> administradorOppo = admRepository.findByInformacoesPessoais_Cpf(user);
         try {
             if (escola.isPresent() && escola.get().getSenha().equals(senha)) {
                 return escola.get();

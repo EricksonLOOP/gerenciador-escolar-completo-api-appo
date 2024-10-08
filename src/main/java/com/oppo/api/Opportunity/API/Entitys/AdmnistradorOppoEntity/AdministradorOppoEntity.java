@@ -1,10 +1,8 @@
-package com.oppo.api.Opportunity.API.Models.AdmnistradorOppo;
+package com.oppo.api.Opportunity.API.Entitys.AdmnistradorOppoEntity;
 
+import com.oppo.api.Opportunity.API.Models.InformacoesPessoaisModel.InformacoesPessoaisModel;
 import com.oppo.api.Opportunity.API.Models.TagsENUM;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Data;
 
 import java.util.UUID;
@@ -16,9 +14,8 @@ public class AdministradorOppoEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
     private String senha;
-    private String nome;
-    private String CPF;
-    private String rg;
+    @Embedded
+    private InformacoesPessoaisModel informacoesPessoais;
     private TagsENUM role;
 
 }

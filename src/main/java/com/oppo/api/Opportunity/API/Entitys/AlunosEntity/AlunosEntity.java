@@ -1,9 +1,11 @@
-package com.oppo.api.Opportunity.API.Models.Alunos;
+package com.oppo.api.Opportunity.API.Entitys.AlunosEntity;
 
-import com.oppo.api.Opportunity.API.Models.Escolas.EscolasEntity;
-import com.oppo.api.Opportunity.API.Models.Materias.MateriasEntity;
+import com.oppo.api.Opportunity.API.Entitys.EscolasEntity.EscolasEntity;
+import com.oppo.api.Opportunity.API.Entitys.MateriasEntity.MateriasEntity;
+import com.oppo.api.Opportunity.API.Models.ContatoModel.ContatoModel;
+import com.oppo.api.Opportunity.API.Models.InformacoesPessoaisModel.InformacoesPessoaisModel;
 import com.oppo.api.Opportunity.API.Models.TagsENUM;
-import com.oppo.api.Opportunity.API.Models.Turmas.TurmasEntity;
+import com.oppo.api.Opportunity.API.Entitys.TurmasEntity.TurmasEntity;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -17,16 +19,11 @@ public class AlunosEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
-    private String nome;
-    private String mae;
-    private String pai;
-    private String endereco;
-    private String email;
     private String senha;
-    private String tel;
-    private String CPF;
-    private String rg;
-    private String instagram;
+   @Embedded
+   private InformacoesPessoaisModel informacoesPessoais;
+   @Embedded
+   private ContatoModel contato;
 
     @Enumerated(EnumType.STRING)
     private TagsENUM role;

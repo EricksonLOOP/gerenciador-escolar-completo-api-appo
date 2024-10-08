@@ -1,7 +1,7 @@
-package com.oppo.api.Opportunity.API.DTOs.AdminDTO;
+package com.oppo.api.Opportunity.API.DTOs.AdminDTOs;
 
 import com.oppo.api.Opportunity.API.Models.TagsENUM;
-import org.antlr.v4.runtime.misc.NotNull;
+import jakarta.validation.constraints.NotNull;
 
 public record AdminDTO(@NotNull String nome,
                        @NotNull String rg,

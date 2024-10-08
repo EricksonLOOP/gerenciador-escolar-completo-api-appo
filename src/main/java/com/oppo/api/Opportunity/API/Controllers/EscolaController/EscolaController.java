@@ -6,46 +6,61 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @RestController
 @RequestMapping("/api/escolas")
+@CrossOrigin("http://localhost:5173/")
 public class EscolaController {
 
     @Autowired
     private EscolaServices escolaServices;
-
-    @PostMapping("/create")
-    public ResponseEntity<?> createEscola(@RequestBody EscolasDTO escolasDTO) {
-        return escolaServices.create(escolasDTO);
-    }
-    @GetMapping("/aluno/listar")
-    public ResponseEntity<?> listarAluno(@RequestBody EscolasDTO escolasDTO){
-        return escolaServices.listarAluno(escolasDTO);
-    }
     @GetMapping("/hello")
     public String helloWord(){
         return "Hello, world!";
     }
-    @PutMapping("/update")
-    public ResponseEntity<?> updateEscola(@RequestBody EscolasDTO escolasDTO){
+    @PostMapping("/create")
+    public ResponseEntity<?> createEscola(@RequestBody EscolasDTO escolasDTO) {
+        return escolaServices.create(escolasDTO);
+    }
+    @PutMapping("/update/{id}")
+    public ResponseEntity<?> updateEscola(@PathVariable("id") UUID id, @RequestBody EscolasDTO escolasDTO){
         return  escolaServices.update(escolasDTO);
     }
-    @PutMapping("/aluno/add")
-    public ResponseEntity<?> addAluno(@RequestBody EscolasDTO escolasDTO){
+    @GetMapping("/alunos/listar/{escolaId}")
+    public ResponseEntity<?> listarAluno(@PathVariable("escolaId") UUID escola, @RequestBody EscolasDTO escolasDTO){
+        return escolaServices.listarAluno(escolasDTO);
+    }
+    @PutMapping("/aluno/{alunoid}/{escolaId}/add")
+    public ResponseEntity<?> addAluno(
+            @PathVariable("alunoid") UUID aluno,
+            @PathVariable("escolaId") UUID escola,
+            @RequestBody EscolasDTO escolasDTO){
         return escolaServices.addAluno(escolasDTO);
     }
-    @PutMapping("/aluno/remove")
-    public ResponseEntity<?> removeAluno(@RequestBody EscolasDTO escolasDTO){
+    @PutMapping("/aluno/{alunoId}/{escolaId}/remove")
+    public ResponseEntity<?> removeAluno(
+            @PathVariable("alunoId") UUID alunoId,
+            @PathVariable("escolaId") UUID escolaId,
+            @RequestBody EscolasDTO escolasDTO){
         return escolaServices.removeAluno(escolasDTO);
     }
-    @PutMapping("/professor/add")
-    public ResponseEntity<?> addProfessor(@RequestBody EscolasDTO escolasDTO){
+    @PutMapping("/professor/{professorId}/{escolaId}/add")
+    public ResponseEntity<?> addProfessor(
+            @PathVariable("professorId") UUID profesorId,
+            @PathVariable("escolaId") UUID escolaId,
+            @RequestBody EscolasDTO escolasDTO
+    ){
         return escolaServices.addProfessor(escolasDTO);
     }
-    @PutMapping("/professor/remove")
-    public ResponseEntity<?> removeProfessor(@RequestBody EscolasDTO escolasDTO){
+    @PutMapping("/professor/{professorId}/{escolaId}/remove")
+    public ResponseEntity<?> removeProfessor(
+            @PathVariable("professorId") UUID professorId,
+            @PathVariable("escolaId") UUID escolaId,
+            @RequestBody EscolasDTO escolasDTO){
         return escolaServices.removeProfessor(escolasDTO);
     }
-    @GetMapping("/professor/listar")
+    @GetMapping("/professor/{escolaId}/listar")
     public ResponseEntity<?> listarProfessor(@RequestBody EscolasDTO escolasDTO){
         return escolaServices.listarProfessor(escolasDTO);
     }
