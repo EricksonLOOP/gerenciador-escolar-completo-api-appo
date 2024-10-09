@@ -18,4 +18,7 @@ public class EnderecoModel {
     private String estado;
     @Size(min = 8, max = 8)
     private String cep;
+    public EnderecoModel(){
+
+    }
 }

@@ -15,17 +15,20 @@ import java.util.List;
 public class InformacoesEscola {
     private String website;
     private String nivelDeEnsino;
-    private int capMax;
-    private int numFuncionarios;
+    private Integer capMax;
+    private Integer numFuncionarios;
     @Size(min = 1, max = 3, message = "Uma escola tem que ter ao menos 1 turno.")
     private List<String> turnos;
-    private int numSalas;
-    private int numLaboratorios;
-    private int numBibliotecas;
+    private Integer numSalas;
+    private Integer numLaboratorios;
+    private Integer numBibliotecas;
     private boolean possuiInternet;
     private String modeloEscolar;
     @Size(min = 8, max = 50, message = "Um nome tem que ter entre 8 a 50 digitos.")
     private String nome;
     @Size(min = 14, max = 14, message = "Um CNPJ tem que ter 14 digitos.")
     private String cnpj;
+    public InformacoesEscola(){
+
+    }
 }

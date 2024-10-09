@@ -46,12 +46,13 @@ public class PubliAuthServiceImpl implements PubliAuthService {
 
         try {
             Object validado = fazerValidacao(loginModel.getUsuario(), loginModel.getSenha());
-            Authentication authentication;
+            Authentication authentication = null;
 
             if (validado instanceof EscolasEntity escola) {
                 authentication = authenticationManager.authenticate(
                         new UsernamePasswordAuthenticationToken(escola.getInformacoesEscola().getCnpj(), loginModel.getSenha())
                 );
+
             } else if (validado instanceof AlunosEntity aluno) {
                 authentication = authenticationManager.authenticate(
                         new UsernamePasswordAuthenticationToken(aluno.getInformacoesPessoais().getCpf(), loginModel.getSenha())
@@ -67,7 +68,6 @@ public class PubliAuthServiceImpl implements PubliAuthService {
             } else {
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Usuário inválido.");
             }
-
             if (authentication != null && authentication.isAuthenticated()) {
                 String token = jwtUtil.createToken(validado);
                 return ResponseEntity.status(HttpStatus.OK).body(Map.of(
@@ -77,6 +77,7 @@ public class PubliAuthServiceImpl implements PubliAuthService {
                 ));
             }
 
+
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao autenticar.");
 
         } catch (Exception e) {
@@ -84,6 +85,7 @@ public class PubliAuthServiceImpl implements PubliAuthService {
         }
    }
     public Object fazerValidacao(String user, String senha) {
+        System.out.println("VALIDANDO");
         Optional<EscolasEntity> escola = escolasRepository.findByInformacoesEscola_Cnpj(user);
         Optional<AlunosEntity> aluno = alunosRepository.findByInformacoesPessoais_Cpf(user);
         Optional<ProfessoresEntity> professor = professorRepository.findByInformacoesPessoais_Cpf(user);

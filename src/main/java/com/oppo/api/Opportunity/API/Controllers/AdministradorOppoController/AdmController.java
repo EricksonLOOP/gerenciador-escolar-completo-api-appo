@@ -35,15 +35,12 @@ public class AdmController {
     }
     @GetMapping("/listar/escolas")
     @CrossOrigin
-    public ResponseEntity<List<AdminEscolasDTO>> listarEscolas() {
-        List<EscolasEntity> escolas = administradorService.listarEscolas();
-        List<AdminEscolasDTO> admEscolasDTOS = escolas
-                .stream()
-                .map(escola -> new AdminEscolasDTO(escola.getInformacoesEscola().getNome(), escola.getId()))
-                .collect(Collectors.toList());
+    public ResponseEntity<?> listarEscolas() {
+        ResponseEntity<?> escolas = administradorService.listarEscolas();
+
 
         // Retorne a lista diretamente como corpo da resposta
-        return ResponseEntity.ok(admEscolasDTOS);
+        return escolas;
     }
     @GetMapping("/infos/escola/{id}")
     public ResponseEntity<?> getInfosEscola(@PathVariable("id") UUID Id){

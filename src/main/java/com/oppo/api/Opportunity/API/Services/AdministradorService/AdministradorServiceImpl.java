@@ -1,6 +1,7 @@
 package com.oppo.api.Opportunity.API.Services.AdministradorService;
 
 import com.oppo.api.Opportunity.API.DTOs.AdminDTOs.AdminDTO;
+import com.oppo.api.Opportunity.API.DTOs.AdminDTOs.AdminEscolasDTO;
 import com.oppo.api.Opportunity.API.Entitys.AdmnistradorOppoEntity.AdministradorOppoEntity;
 import com.oppo.api.Opportunity.API.Entitys.EscolasEntity.EscolasEntity;
 import com.oppo.api.Opportunity.API.Repositories.AdministradorRepository.AdmRepository;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class AdministradorServiceImpl  implements AdministradorService{
@@ -59,10 +61,17 @@ public class AdministradorServiceImpl  implements AdministradorService{
     }
 
     @Override
-    public List<EscolasEntity> listarEscolas() {
+    public ResponseEntity<?> listarEscolas() {
         try {
             List<EscolasEntity> listaEscolas = escolasRepository.findAll();
-            return listaEscolas;
+            if (listaEscolas.isEmpty()){
+                return ResponseEntity.status(HttpStatus.OK).body("Não encontrou escolas.");
+            }
+            /*List<AdminEscolasDTO> admEscolasDTOS = listaEscolas
+                    .stream()
+                    .map(escola -> new AdminEscolasDTO(escola.getInformacoesEscola().getNome(), escola.getId()))
+                    .collect(Collectors.toList());*/
+            return ResponseEntity.status(HttpStatus.OK).body(listaEscolas);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

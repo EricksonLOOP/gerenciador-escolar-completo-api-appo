@@ -12,5 +12,8 @@ import lombok.Data;
 public class ContatoModel {
     private String telefone;
     private String email;
+    public ContatoModel(){
+
+    }
 
 }

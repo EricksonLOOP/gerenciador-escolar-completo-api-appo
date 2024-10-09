@@ -30,11 +30,8 @@ public class EscolasEntity {
     private ContatoModel contatoEscola;
     @Embedded
     private InformacoesEscola informacoesEscola;
-
-
     @Enumerated(EnumType.STRING)
     private TagsENUM role;
-
     @OneToMany(mappedBy = "escola", cascade = CascadeType.ALL)
     private List<AlunosEntity> alunos;
     @OneToMany(mappedBy = "escola", cascade = CascadeType.ALL)
@@ -45,5 +42,8 @@ public class EscolasEntity {
     private List<DiretorEntity> diretores;
     @OneToMany(mappedBy = "escola", cascade = CascadeType.ALL)
     private List<FuncionarioEntity> funcionarios;
+    public EscolasEntity(){
+
+    }
 
 }
