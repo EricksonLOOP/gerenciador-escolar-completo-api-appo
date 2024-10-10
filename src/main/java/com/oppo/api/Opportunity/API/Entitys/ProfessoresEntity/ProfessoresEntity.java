@@ -9,6 +9,8 @@ import com.oppo.api.Opportunity.API.Models.InformacoesProfissionaisModel.Informa
 import com.oppo.api.Opportunity.API.Models.TagsENUM;
 import com.oppo.api.Opportunity.API.Entitys.TurmasEntity.TurmasEntity;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 
 import java.util.Set;
@@ -16,6 +18,8 @@ import java.util.UUID;
 
 @Entity
 @Data
+@Builder
+@AllArgsConstructor
 public class ProfessoresEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -52,4 +56,8 @@ public class ProfessoresEntity {
     @ManyToOne
     @JoinColumn(name = "escola_id")
     private EscolasEntity escola;
+
+    public ProfessoresEntity() {
+
+    }
 }

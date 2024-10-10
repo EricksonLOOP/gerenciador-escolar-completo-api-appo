@@ -1,12 +1,13 @@
 package com.oppo.api.Opportunity.API.Services.EscolasService;
 
 import com.oppo.api.Opportunity.API.DTOs.AlunoDTOs.ListarAlunosDTO;
-import com.oppo.api.Opportunity.API.DTOs.EscolasDTOs.EscolasDTO;
+import com.oppo.api.Opportunity.API.DTOs.EscolasDTOs.CriarEscolasDTO;
 import com.oppo.api.Opportunity.API.Entitys.AlunosEntity.AlunosEntity;
 import com.oppo.api.Opportunity.API.Entitys.EscolasEntity.EscolasEntity;
 import com.oppo.api.Opportunity.API.Models.ContatoModel.ContatoModel;
 import com.oppo.api.Opportunity.API.Models.EnderecoModel.EnderecoModel;
 import com.oppo.api.Opportunity.API.Models.InformacoesEscola.InformacoesEscola;
+import com.oppo.api.Opportunity.API.Models.TagsENUM;
 import com.oppo.api.Opportunity.API.Repositories.AlunosRepository.AlunosRepository;
 import com.oppo.api.Opportunity.API.Repositories.EscolasRespository.EscolasRepository;
 import com.oppo.api.Opportunity.API.Services.ValidacoesServices.ValidacoesService;
@@ -31,15 +32,15 @@ public class EscolaServicesImpl implements EscolaServices {
     private AlunosRepository alunosRepository;
 
     @Override
-    public ResponseEntity<?> create(EscolasDTO escolasDTO) {
+    public ResponseEntity<?> create(CriarEscolasDTO criarEscolasDTO) {
         try {
             //Verifica se o CNPJ existe
-            if (!validacoesService.validarcnpj(escolasDTO.cnpj())){
+            if (!validacoesService.validarcnpj(criarEscolasDTO.cnpj())){
 
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("CNPJ não existe.");
             }
             // Verifica se a escola já existe pelo CNPJ
-            Optional<EscolasEntity> encontrarEscola = escolasRepository.findByInformacoesEscola_Cnpj(escolasDTO.cnpj()); // Acesse diretamente o campo cnpj
+            Optional<EscolasEntity> encontrarEscola = escolasRepository.findByInformacoesEscola_Cnpj(criarEscolasDTO.cnpj()); // Acesse diretamente o campo cnpj
             if (encontrarEscola.isPresent()) {
                 return ResponseEntity.status(HttpStatus.CONFLICT).body("CNPJ já registrado. Não é possível criar uma escola com este CNPJ");
             }
@@ -47,30 +48,30 @@ public class EscolaServicesImpl implements EscolaServices {
             // Cria uma nova entidade de escola a partir do DTO
             EscolasEntity escola = EscolasEntity.builder()
                     .informacoesEscola(new InformacoesEscola(
-                            escolasDTO.nivelDeEnsino(),
-                            escolasDTO.nivelDeEnsino(),
-                            escolasDTO.capMax(),
-                            escolasDTO.numFuncionarios(),
-                            escolasDTO.turnos(),
-                            escolasDTO.numSalas(),
-                            escolasDTO.numLaboratorios(),
-                            escolasDTO.numBiblioteca(),
-                            escolasDTO.possuiInternet(),
-                            escolasDTO.modeloEscolar(),
-                            escolasDTO.nome(),
-                            escolasDTO.cnpj()
+                            criarEscolasDTO.nivelDeEnsino(),
+                            criarEscolasDTO.nivelDeEnsino(),
+                            criarEscolasDTO.capMax(),
+                            criarEscolasDTO.numFuncionarios(),
+                            criarEscolasDTO.turnos(),
+                            criarEscolasDTO.numSalas(),
+                            criarEscolasDTO.numLaboratorios(),
+                            criarEscolasDTO.numBiblioteca(),
+                            criarEscolasDTO.possuiInternet(),
+                            criarEscolasDTO.modeloEscolar(),
+                            criarEscolasDTO.nome(),
+                            criarEscolasDTO.cnpj()
                     ))
-                    .contatoEscola(new ContatoModel(escolasDTO.telefone(), escolasDTO.email()))
+                    .contatoEscola(new ContatoModel(criarEscolasDTO.telefone(), criarEscolasDTO.email()))
                     .endereco(new EnderecoModel(
-                            escolasDTO.rua(),
-                            escolasDTO.numero(),
-                            escolasDTO.bairro(),
-                            escolasDTO.cidade(),
-                            escolasDTO.estado(),
-                            escolasDTO.cep()
+                            criarEscolasDTO.rua(),
+                            criarEscolasDTO.numero(),
+                            criarEscolasDTO.bairro(),
+                            criarEscolasDTO.cidade(),
+                            criarEscolasDTO.estado(),
+                            criarEscolasDTO.cep()
                     ))
-                    .role(escolasDTO.role())
-                    .senha(escolasDTO.senha())
+                    .senha(criarEscolasDTO.senha())
+                    .role(TagsENUM.ESCOLA)
                     .build();
 
             // Salva a nova escola no repositório
@@ -85,10 +86,10 @@ public class EscolaServicesImpl implements EscolaServices {
 
 
     @Override
-    public ResponseEntity<?> update(EscolasDTO escolasDTO) {
+    public ResponseEntity<?> update(CriarEscolasDTO criarEscolasDTO) {
         try {
             // Procurando a escola no repositório usando o CNPJ da escola (baseado nas informações fornecidas em 'escolasDTO')
-            Optional<EscolasEntity> optEscola = escolasRepository.findByInformacoesEscola_Cnpj(escolasDTO.cnpj());
+            Optional<EscolasEntity> optEscola = escolasRepository.findByInformacoesEscola_Cnpj(criarEscolasDTO.cnpj());
 
             // Verificando se a escola foi encontrada no banco de dados
             if (optEscola.isPresent()) {
@@ -96,10 +97,10 @@ public class EscolaServicesImpl implements EscolaServices {
                 EscolasEntity escola = optEscola.get();
 
                 // Atualizando os dados da escola com os valores fornecidos no 'escolasDTO'
-                escola.getInformacoesEscola().setNome(escolasDTO.nome());   // Atualiza o nome da escola
-                escola.getInformacoesEscola().setCnpj(escolasDTO.cnpj());   // Atualiza o CNPJ da escola
-                escola.setSenha(escolasDTO.senha());                        // Atualiza a senha da escola
-                escola.setRole(escolasDTO.role());                          // Atualiza o papel/role da escola (por exemplo, ADMIN)
+                escola.getInformacoesEscola().setNome(criarEscolasDTO.nome());   // Atualiza o nome da escola
+                escola.getInformacoesEscola().setCnpj(criarEscolasDTO.cnpj());   // Atualiza o CNPJ da escola
+                escola.setSenha(criarEscolasDTO.senha());                        // Atualiza a senha da escola
+                escola.setRole(criarEscolasDTO.role());                          // Atualiza o papel/role da escola (por exemplo, ADMIN)
 
                 // Salvando as mudanças no banco de dados e retornando a resposta com status OK e os dados da escola atualizados
                 return ResponseEntity.status(HttpStatus.OK).body(escolasRepository.save(escola));
@@ -219,9 +220,9 @@ public class EscolaServicesImpl implements EscolaServices {
 
 
     @Override
-    public ResponseEntity<?> addProfessor(EscolasDTO escolasDTO) {
+    public ResponseEntity<?> addProfessor(CriarEscolasDTO criarEscolasDTO) {
         try {
-            Optional<EscolasEntity> optEscola = escolasRepository.findByInformacoesEscola_Cnpj(escolasDTO.cnpj());
+            Optional<EscolasEntity> optEscola = escolasRepository.findByInformacoesEscola_Cnpj(criarEscolasDTO.cnpj());
             if (optEscola.isPresent()){
                 EscolasEntity escola = optEscola.get();
             //    return  ResponseEntity.status(HttpStatus.OK).body("Professor adicionado: "+escola.getProfessores().add(escolasDTO.professoresEntity()));
@@ -232,9 +233,9 @@ public class EscolaServicesImpl implements EscolaServices {
         }
     }
     @Override
-    public ResponseEntity<?> removeProfessor(EscolasDTO escolasDTO) {
+    public ResponseEntity<?> removeProfessor(CriarEscolasDTO criarEscolasDTO) {
         try {
-            Optional<EscolasEntity> optEscola = escolasRepository.findByInformacoesEscola_Cnpj(escolasDTO.cnpj());
+            Optional<EscolasEntity> optEscola = escolasRepository.findByInformacoesEscola_Cnpj(criarEscolasDTO.cnpj());
             if (optEscola.isPresent()){
                 EscolasEntity escola = optEscola.get();
         //        return  ResponseEntity.status(HttpStatus.OK).body("Professor removido: "+escola.getProfessores().remove(escolasDTO.professoresEntity()));
@@ -246,9 +247,9 @@ public class EscolaServicesImpl implements EscolaServices {
     }
 
     @Override
-    public ResponseEntity<?> listarProfessor(EscolasDTO escolasDTO) {
+    public ResponseEntity<?> listarProfessor(CriarEscolasDTO criarEscolasDTO) {
         try {
-            Optional<EscolasEntity> optEscola = escolasRepository.findByInformacoesEscola_Cnpj(escolasDTO.cnpj());
+            Optional<EscolasEntity> optEscola = escolasRepository.findByInformacoesEscola_Cnpj(criarEscolasDTO.cnpj());
             if (optEscola.isPresent()){
                 EscolasEntity escola = optEscola.get();
                 return  ResponseEntity.status(HttpStatus.OK).body("Lista de Professores: "+escola.getProfessores());

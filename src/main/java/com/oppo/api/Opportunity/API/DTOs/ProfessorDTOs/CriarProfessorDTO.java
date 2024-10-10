@@ -8,7 +8,6 @@ import java.util.Date;
 public record CriarProfessorDTO(
         //Basico
         @NotNull String senha,
-        @NotNull TagsENUM role,
         //Contato
         @NotNull String telefone,
         @NotNull String email,

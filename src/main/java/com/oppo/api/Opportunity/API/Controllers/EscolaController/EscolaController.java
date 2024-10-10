@@ -1,6 +1,6 @@
 package com.oppo.api.Opportunity.API.Controllers.EscolaController;
 
-import com.oppo.api.Opportunity.API.DTOs.EscolasDTOs.EscolasDTO;
+import com.oppo.api.Opportunity.API.DTOs.EscolasDTOs.CriarEscolasDTO;
 import com.oppo.api.Opportunity.API.Services.EscolasService.EscolaServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,12 +20,12 @@ public class EscolaController {
         return "Hello, world!";
     }
     @PostMapping("/create")
-    public ResponseEntity<?> createEscola(@RequestBody EscolasDTO escolasDTO) {
-        return escolaServices.create(escolasDTO);
+    public ResponseEntity<?> createEscola(@RequestBody CriarEscolasDTO criarEscolasDTO) {
+        return escolaServices.create(criarEscolasDTO);
     }
     @PutMapping("/update/{id}")
-    public ResponseEntity<?> updateEscola(@PathVariable("id") UUID id, @RequestBody EscolasDTO escolasDTO){
-        return  escolaServices.update(escolasDTO);
+    public ResponseEntity<?> updateEscola(@PathVariable("id") UUID id, @RequestBody CriarEscolasDTO criarEscolasDTO){
+        return  escolaServices.update(criarEscolasDTO);
     }
     @GetMapping("/alunos/listar/{escolaId}")
     public ResponseEntity<?> listarAluno(@PathVariable("escolaId") UUID escola){
@@ -47,20 +47,20 @@ public class EscolaController {
     public ResponseEntity<?> addProfessor(
             @PathVariable("professorId") UUID profesorId,
             @PathVariable("escolaId") UUID escolaId,
-            @RequestBody EscolasDTO escolasDTO
+            @RequestBody CriarEscolasDTO criarEscolasDTO
     ){
-        return escolaServices.addProfessor(escolasDTO);
+        return escolaServices.addProfessor(criarEscolasDTO);
     }
     @PutMapping("/professor/{professorId}/{escolaId}/remove")
     public ResponseEntity<?> removeProfessor(
             @PathVariable("professorId") UUID professorId,
             @PathVariable("escolaId") UUID escolaId,
-            @RequestBody EscolasDTO escolasDTO){
-        return escolaServices.removeProfessor(escolasDTO);
+            @RequestBody CriarEscolasDTO criarEscolasDTO){
+        return escolaServices.removeProfessor(criarEscolasDTO);
     }
     @GetMapping("/professor/{escolaId}/listar")
-    public ResponseEntity<?> listarProfessor(@RequestBody EscolasDTO escolasDTO){
-        return escolaServices.listarProfessor(escolasDTO);
+    public ResponseEntity<?> listarProfessor(@RequestBody CriarEscolasDTO criarEscolasDTO){
+        return escolaServices.listarProfessor(criarEscolasDTO);
     }
 }
 

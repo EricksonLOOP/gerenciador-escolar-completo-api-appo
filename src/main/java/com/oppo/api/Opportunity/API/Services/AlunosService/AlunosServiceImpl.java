@@ -5,6 +5,7 @@ import com.oppo.api.Opportunity.API.Entitys.AlunosEntity.AlunosEntity;
 import com.oppo.api.Opportunity.API.Models.ContatoModel.ContatoModel;
 import com.oppo.api.Opportunity.API.Models.EnderecoModel.EnderecoModel;
 import com.oppo.api.Opportunity.API.Models.InformacoesPessoaisModel.InformacoesPessoaisModel;
+import com.oppo.api.Opportunity.API.Models.TagsENUM;
 import com.oppo.api.Opportunity.API.Repositories.AlunosRepository.AlunosRepository;
 import com.oppo.api.Opportunity.API.Services.ValidacoesServices.ValidacoesService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,7 +54,7 @@ public class AlunosServiceImpl implements AlunosService{
                             alunoDTO.cep()
                     ))
                     .senha(alunoDTO.senha())
-                    .role(alunoDTO.role())
+                    .role(TagsENUM.ALUNO)
                     .build();
             return ResponseEntity.status(HttpStatus.CREATED).body(alunosRepository.save(aluno));
         }catch (Exception e){

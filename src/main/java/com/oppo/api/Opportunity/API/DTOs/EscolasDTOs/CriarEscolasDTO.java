@@ -1,15 +1,12 @@
 package com.oppo.api.Opportunity.API.DTOs.EscolasDTOs;
 
 
-import com.oppo.api.Opportunity.API.Entitys.AlunosEntity.AlunosEntity;
-import com.oppo.api.Opportunity.API.Entitys.ProfessoresEntity.ProfessoresEntity;
 import com.oppo.api.Opportunity.API.Models.TagsENUM;
-import jakarta.validation.constraints.NotNull;
 
 import java.io.Serializable;
 import java.util.List;
 
-public record EscolasDTO(
+public record CriarEscolasDTO(
          String nome,
          String cnpj,
          String senha,

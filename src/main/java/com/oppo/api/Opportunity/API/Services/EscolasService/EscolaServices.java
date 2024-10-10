@@ -1,22 +1,22 @@
 package com.oppo.api.Opportunity.API.Services.EscolasService;
 
-import com.oppo.api.Opportunity.API.DTOs.EscolasDTOs.EscolasDTO;
+import com.oppo.api.Opportunity.API.DTOs.EscolasDTOs.CriarEscolasDTO;
 import org.springframework.http.ResponseEntity;
 
 import java.util.UUID;
 
 
 public interface EscolaServices {
-    ResponseEntity<?> create(EscolasDTO escolasDTO);
-    ResponseEntity<?> update(EscolasDTO escolasDTO);
+    ResponseEntity<?> create(CriarEscolasDTO criarEscolasDTO);
+    ResponseEntity<?> update(CriarEscolasDTO criarEscolasDTO);
 
     ResponseEntity<?> addAluno(UUID idAluno, UUID idEscola);
     ResponseEntity<?> removeAluno(UUID idAluno, UUID idEscola);
     ResponseEntity<?> listarAlunos(UUID idEscola);
 
-    ResponseEntity<?> addProfessor(EscolasDTO escolasDTO);
-    ResponseEntity<?> removeProfessor(EscolasDTO escolasDTO);
-    ResponseEntity<?> listarProfessor(EscolasDTO escolasDTO);
+    ResponseEntity<?> addProfessor(CriarEscolasDTO criarEscolasDTO);
+    ResponseEntity<?> removeProfessor(CriarEscolasDTO criarEscolasDTO);
+    ResponseEntity<?> listarProfessor(CriarEscolasDTO criarEscolasDTO);
 
 
 }
