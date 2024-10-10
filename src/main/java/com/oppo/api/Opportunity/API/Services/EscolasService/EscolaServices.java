@@ -14,8 +14,8 @@ public interface EscolaServices {
     ResponseEntity<?> removeAluno(UUID idAluno, UUID idEscola);
     ResponseEntity<?> listarAlunos(UUID idEscola);
 
-    ResponseEntity<?> addProfessor(CriarEscolasDTO criarEscolasDTO);
-    ResponseEntity<?> removeProfessor(CriarEscolasDTO criarEscolasDTO);
+    ResponseEntity<?> addProfessor(UUID idProfessor, UUID idEscola);
+    ResponseEntity<?> removeProfessor(UUID idProfessor, UUID idEscola);
     ResponseEntity<?> listarProfessor(CriarEscolasDTO criarEscolasDTO);
 
 

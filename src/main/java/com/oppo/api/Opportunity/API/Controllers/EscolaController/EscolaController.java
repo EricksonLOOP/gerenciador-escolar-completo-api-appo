@@ -46,17 +46,14 @@ public class EscolaController {
     @PutMapping("/professor/{professorId}/{escolaId}/add")
     public ResponseEntity<?> addProfessor(
             @PathVariable("professorId") UUID profesorId,
-            @PathVariable("escolaId") UUID escolaId,
-            @RequestBody CriarEscolasDTO criarEscolasDTO
-    ){
-        return escolaServices.addProfessor(criarEscolasDTO);
+            @PathVariable("escolaId") UUID escolaId){
+        return escolaServices.addProfessor(profesorId, escolaId);
     }
     @PutMapping("/professor/{professorId}/{escolaId}/remove")
     public ResponseEntity<?> removeProfessor(
             @PathVariable("professorId") UUID professorId,
-            @PathVariable("escolaId") UUID escolaId,
-            @RequestBody CriarEscolasDTO criarEscolasDTO){
-        return escolaServices.removeProfessor(criarEscolasDTO);
+            @PathVariable("escolaId") UUID escolaId){
+        return escolaServices.removeProfessor(professorId, escolaId);
     }
     @GetMapping("/professor/{escolaId}/listar")
     public ResponseEntity<?> listarProfessor(@RequestBody CriarEscolasDTO criarEscolasDTO){

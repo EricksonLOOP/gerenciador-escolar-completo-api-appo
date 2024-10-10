@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -67,11 +68,15 @@ public class AdministradorServiceImpl  implements AdministradorService{
             if (listaEscolas.isEmpty()){
                 return ResponseEntity.status(HttpStatus.OK).body("Não encontrou escolas.");
             }
-            /*List<AdminEscolasDTO> admEscolasDTOS = listaEscolas
-                    .stream()
-                    .map(escola -> new AdminEscolasDTO(escola.getInformacoesEscola().getNome(), escola.getId()))
-                    .collect(Collectors.toList());*/
-            return ResponseEntity.status(HttpStatus.OK).body(listaEscolas);
+            List<AdminEscolasDTO> escolasDTOS = new ArrayList<>();
+            for (int i = 0; i< listaEscolas.size(); i++){
+                AdminEscolasDTO escola = new AdminEscolasDTO(
+                        listaEscolas.get(i).getInformacoesEscola().getNome(),
+                        listaEscolas.get(i).getId()
+                );
+                escolasDTOS.add(escola);
+            }
+            return ResponseEntity.status(HttpStatus.OK).body(escolasDTOS);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
