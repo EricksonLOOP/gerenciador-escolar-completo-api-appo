@@ -25,5 +25,13 @@ public record CriarProfessorDTO(
         @NotNull String cpf,
         @NotNull String rg,
         @NotNull String mae,
-        @NotNull String pai) {
+        @NotNull String pai,
+        //Profissionais
+        @NotNull String estadoCivil,
+        @NotNull String naturalidade,
+        @NotNull String cargo,
+        @NotNull String departamento,
+        @NotNull String tipoDeContrato,
+        @NotNull String regimeDeTrabalho
+) {
 }
