@@ -28,22 +28,20 @@ public class EscolaController {
         return  escolaServices.update(escolasDTO);
     }
     @GetMapping("/alunos/listar/{escolaId}")
-    public ResponseEntity<?> listarAluno(@PathVariable("escolaId") UUID escola, @RequestBody EscolasDTO escolasDTO){
-        return escolaServices.listarAluno(escolasDTO);
+    public ResponseEntity<?> listarAluno(@PathVariable("escolaId") UUID escola){
+        return escolaServices.listarAlunos(escola);
     }
     @PutMapping("/aluno/{alunoid}/{escolaId}/add")
     public ResponseEntity<?> addAluno(
             @PathVariable("alunoid") UUID aluno,
-            @PathVariable("escolaId") UUID escola,
-            @RequestBody EscolasDTO escolasDTO){
-        return escolaServices.addAluno(escolasDTO);
+            @PathVariable("escolaId") UUID escola){
+        return escolaServices.addAluno(aluno, escola);
     }
     @PutMapping("/aluno/{alunoId}/{escolaId}/remove")
     public ResponseEntity<?> removeAluno(
             @PathVariable("alunoId") UUID alunoId,
-            @PathVariable("escolaId") UUID escolaId,
-            @RequestBody EscolasDTO escolasDTO){
-        return escolaServices.removeAluno(escolasDTO);
+            @PathVariable("escolaId") UUID escolaId){
+        return escolaServices.removeAluno(alunoId, escolaId);
     }
     @PutMapping("/professor/{professorId}/{escolaId}/add")
     public ResponseEntity<?> addProfessor(
