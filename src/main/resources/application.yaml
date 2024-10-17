@@ -2,9 +2,9 @@ spring:
   application:
     name: Opportunity-API
   datasource:
-    url: jdbc:postgresql://${DATABASE_HOST:junction.proxy.rlwy.net}:${DATABASE_PORT:50320}/${DATABASE_NAME:railway}
+    url: jdbc:postgresql://${DATABASE_HOST:localhost}:${DATABASE_PORT:5432}/${DATABASE_NAME:oppo}
     username: ${DATABASE_USER:postgres}
-    password: ${DATABASE_PASSWORD:hQehMRckuUQYDFjKCQRuXIrwCqAprkTS}
+    password: ${DATABASE_PASSWORD:root}
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
@@ -13,3 +13,6 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
+  security:
+    filter:
+      order: 10
