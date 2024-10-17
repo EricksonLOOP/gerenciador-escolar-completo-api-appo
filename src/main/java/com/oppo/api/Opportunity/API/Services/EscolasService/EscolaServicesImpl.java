@@ -517,13 +517,7 @@ public class EscolaServicesImpl implements EscolaServices {
             return ResponseEntity.internalServerError().body("Erro interno: " + e.getMessage());
         }
     }
-
-
-
-    @Override
-    public ResponseEntity<?> mudarAlunoDeTurma(UUID idTurma, UUID idAluno, UUID idEscola) {
-        return null;
-    }
+    
 
     @Override
     public ResponseEntity<?> removerMateriaNaTurma(UUID idTurma, UUID idMateria, UUID idEscola) {
