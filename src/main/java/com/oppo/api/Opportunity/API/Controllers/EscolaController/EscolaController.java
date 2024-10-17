@@ -77,7 +77,7 @@ public class EscolaController {
         return escolaServices.criarTurma(criarTurmaDTO, idEscola);
     }
     @PostMapping("/{idEscola}/turmas/{idTurma}/materia/{idMateria}")
-    public ResponseEntity<?> addMateriaNaTurma(@PathVariable("idEscola") UUID idEscola, @PathVariable("idTurma") UUID idTurma, @PathVariable("idMateria") UUID idMateria {
+    public ResponseEntity<?> addMateriaNaTurma(@PathVariable("idEscola") UUID idEscola, @PathVariable("idTurma") UUID idTurma, @PathVariable("idMateria") UUID idMateria) {
         return escolaServices.addMateriaNaTurma(idTurma, idMateria, idEscola);
     }
     @DeleteMapping("/{idEscola}/turmas/{idTurma}")
@@ -111,7 +111,7 @@ public class EscolaController {
     }
     @PostMapping("/materias/{idMateria}/professores/{idProfessor}")
     public ResponseEntity<?> adicionarProfessorNaMateria(@PathVariable("idMateria") UUID idMateria, @PathVariable("idProfessor") UUID idProfessor){
-        return escolaServices.addProfessorDaMateria(idMateria, idProfessor)
+        return escolaServices.addProfessorDaMateria(idMateria, idProfessor);
     }
 }
 
