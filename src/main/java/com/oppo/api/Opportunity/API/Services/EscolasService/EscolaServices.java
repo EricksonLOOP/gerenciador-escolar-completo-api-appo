@@ -28,7 +28,6 @@ public interface EscolaServices {
     ResponseEntity<?> listarTurma(UUID idEscola);  //Já existente
     ResponseEntity<?> addMateriaNaTurma(UUID idTurma, UUID idMateria, UUID idEscola);
     ResponseEntity<?> matricularAlunoNaTurma(UUID idTurma, UUID idAluno, UUID idEscola);
-    ResponseEntity<?> mudarAlunoDeTurma(UUID idTurma, UUID idAluno, UUID idEscola);
     ResponseEntity<?> removerMateriaNaTurma(UUID idTurma, UUID idMateria, UUID idEscola);
     ResponseEntity<?> listarTodasTurmas(UUID idEscola);
     //Funções da Escola sobre uma matéria
