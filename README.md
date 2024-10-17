@@ -1,9 +1,9 @@
-# <div align="center">Oppo API</div>
+# <div align="center">Oppo API V1.0.1</div>
 
 ## <div align="center">Gestão Escolar Completa e Efetiva</div>
 
 ### <h2>Descrição</h2>
-A **Oppo API** é uma solução voltada para a gestão de escolas, permitindo o controle de turmas, alunos, professores e matérias. A seguir, estão descritas as funcionalidades já implementadas e as necessidades que o sistema supre.
+A **Oppo API** é uma solução voltada para a gestão de escolas de pequeno porte, que não podem gastar muito para sua gestão, permitindo o controle de turmas, alunos, professores e matérias. A seguir, estão descritas as funcionalidades já implementadas e as necessidades que o sistema supre.
 
 ---
 
