@@ -36,6 +36,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())  // Desativa CSRF
                 .authorizeRequests(authorize -> authorize
                         .requestMatchers("/api/auth/login").permitAll()
+                        //.requestMatchers("/api/admin/create/new/admin").permitAll()
                         .requestMatchers("/teste/**").permitAll()
                         .requestMatchers("/api/escolas/**").hasAnyRole("ESCOLA", "ADMIN")
                         .requestMatchers("/api/professores/**").hasAnyRole("PROFESSOR", "ADMIN")

@@ -13,7 +13,7 @@ import java.util.Date;
 @AllArgsConstructor
 public class InformacoesPessoaisModel {
     private String nome;
-    private Date dataDeNascimento;
+    private String dataDeNascimento;
     private String cpf;
     private String rg;
     private String mae;

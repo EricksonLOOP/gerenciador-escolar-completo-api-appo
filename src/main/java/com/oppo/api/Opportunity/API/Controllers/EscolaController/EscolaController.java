@@ -56,8 +56,8 @@ public class EscolaController {
         return escolaServices.removeProfessor(professorId, escolaId);
     }
     @GetMapping("/professor/{escolaId}/listar")
-    public ResponseEntity<?> listarProfessor(@RequestBody CriarEscolasDTO criarEscolasDTO){
-        return escolaServices.listarProfessor(criarEscolasDTO);
+    public ResponseEntity<?> listarProfessor(@PathVariable("escolaId") UUID escolaId){
+        return escolaServices.listarProfessor(escolaId);
     }
 }
 

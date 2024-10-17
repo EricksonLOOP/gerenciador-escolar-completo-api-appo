@@ -42,12 +42,13 @@ public class AlunosEntity {
             inverseJoinColumns = @JoinColumn(name = "materia_id")
     )
     private Set<MateriasEntity> materias;
-
     @ManyToOne
     @JoinColumn(name = "turma_id") // Consistente com a entidade TurmasEntity
     private TurmasEntity turma;
-
     @ManyToOne
     @JoinColumn(name = "escola_id")
     private EscolasEntity escola;
+    public AlunosEntity(){
+
+    }
 }

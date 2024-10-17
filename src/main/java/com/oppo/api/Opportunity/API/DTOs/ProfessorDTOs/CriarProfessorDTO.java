@@ -20,7 +20,7 @@ public record CriarProfessorDTO(
         @NotNull String cep,
         //Pessoais
         @NotNull String nome,
-        @NotNull Date dataDeNascimento,
+        @NotNull String dataDeNascimento,
         @NotNull String cpf,
         @NotNull String rg,
         @NotNull String mae,

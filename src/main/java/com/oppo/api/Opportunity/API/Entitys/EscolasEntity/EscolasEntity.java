@@ -5,6 +5,7 @@ import com.oppo.api.Opportunity.API.Entitys.CoodernadorEntity.CoordenadorEntity;
 import com.oppo.api.Opportunity.API.Entitys.DiretorEntity.DiretorEntity;
 import com.oppo.api.Opportunity.API.Entitys.FuncionarioEntity.FuncionarioEntity;
 import com.oppo.api.Opportunity.API.Entitys.ProfessoresEntity.ProfessoresEntity;
+import com.oppo.api.Opportunity.API.Entitys.TurmasEntity.TurmasEntity;
 import com.oppo.api.Opportunity.API.Models.ContatoModel.ContatoModel;
 import com.oppo.api.Opportunity.API.Models.EnderecoModel.EnderecoModel;
 import com.oppo.api.Opportunity.API.Models.InformacoesEscola.InformacoesEscola;
@@ -32,6 +33,8 @@ public class EscolasEntity {
     private InformacoesEscola informacoesEscola;
     @Enumerated(EnumType.STRING)
     private TagsENUM role;
+    @OneToMany(mappedBy = "escola", cascade = CascadeType.ALL)
+    private List<TurmasEntity> turmas;
     @OneToMany(mappedBy = "escola", cascade = CascadeType.ALL)
     private List<AlunosEntity> alunos;
     @OneToMany(mappedBy = "escola", cascade = CascadeType.ALL)

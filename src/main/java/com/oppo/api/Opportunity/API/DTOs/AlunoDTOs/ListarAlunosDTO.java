@@ -8,6 +8,5 @@ import lombok.Data;
 import java.util.UUID;
 public record ListarAlunosDTO(
         String nome,
-        UUID id,
-        String escolaNome) {
+        UUID id) {
 }
