@@ -1,6 +1,6 @@
 package com.oppo.api.Opportunity.API.Controllers;
 
-import com.oppo.api.Opportunity.API.Services.ValidacoesServices.ValidacoesService;
+import com.oppo.api.Opportunity.API.Services.OppoManagement.ValidacoesServices.ValidacoesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
