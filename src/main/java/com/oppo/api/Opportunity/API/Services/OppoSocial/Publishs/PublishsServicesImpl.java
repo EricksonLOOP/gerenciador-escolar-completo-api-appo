@@ -5,7 +5,10 @@ import com.oppo.api.Opportunity.API.Entitys.PublishsEntity.PublishsEntity;
 import com.oppo.api.Opportunity.API.Models.AuthorModel.AuthorModel;
 import com.oppo.api.Opportunity.API.Repositories.PublishsRepository.PublishsRepository;
 import com.oppo.api.Opportunity.API.Services.OppoManagement.ValidacoesServices.ValidacoesService;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -32,6 +35,7 @@ public class PublishsServicesImpl implements PublishsServices{
         try{
             if (validacoesService.verificarSeContaExistentePeloId(UUID.fromString(criarPostagemDTO.id()))){
                 PublishsEntity newPublish = PublishsEntity.builder()
+                        .id(UUID.randomUUID())
                         .author(new AuthorModel(UUID.fromString(criarPostagemDTO.id()), criarPostagemDTO.name()))
                         .content(criarPostagemDTO.content())
                         .createdAt(new Date())
@@ -41,11 +45,12 @@ public class PublishsServicesImpl implements PublishsServices{
             }
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Ação inválida");
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro interno ao tentar relizar postagem");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro interno ao tentar relizar postagem. message: "+e.getCause());
         }
     }
 
     @Override
+    @Cacheable(value = "posts")
     public ResponseEntity<?> getpublishs() {
         try{
         List<PublishsEntity> publishsEntities = publishsRepository.findAll();

@@ -12,4 +12,7 @@ import java.util.UUID;
 public class AuthorModel {
     private UUID AuthorID;
     private String AuthorName;
+    AuthorModel(){
+
+    }
 }

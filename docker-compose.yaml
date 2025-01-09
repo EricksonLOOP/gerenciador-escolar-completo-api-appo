@@ -1,0 +1,53 @@
+services:
+  java-api:
+    image: openjdk:21-jdk
+    container_name: Oppo-api
+    build:
+      context: .
+      dockerfile: Dockerfile  # O Dockerfile também está aqui
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+      - redis
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/Oppo
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_REDIS_HOST: redis
+      SPRING_REDIS_PORT: 6379
+    volumes:
+      - ./src:/app/src  # Mapear o diretório src
+    networks:
+      - oppo-api
+    command: ["/app/wait-for-it.sh", "postgres:5432", "--", "./mvnw", "spring-boot:run"]
+
+  postgres:
+    image: postgres
+    container_name: postgres-oppo-api
+    environment:
+      POSTGRES_DB: "Oppo"
+      POSTGRES_PASSWORD: "root"
+      POSTGRES_USER: "root"
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - oppo-api
+
+  redis:
+    image: redis:latest
+    container_name: redis
+    ports:
+      - "6379:6379"
+    networks:
+      - oppo-api
+
+networks:
+  oppo-api:
+    driver: bridge
+
+volumes:
+  pgdata:
