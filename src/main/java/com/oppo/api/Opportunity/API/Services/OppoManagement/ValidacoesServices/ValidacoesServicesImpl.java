@@ -16,6 +16,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class ValidacoesServicesImpl implements ValidacoesService {
@@ -128,11 +129,23 @@ public class ValidacoesServicesImpl implements ValidacoesService {
     }
 
     @Override
-    public Boolean verificarSeContaExistente(String email) throws Exception {
+    public Boolean verificarSeContaExistentePeloCpf(String email) throws Exception {
         Optional<EscolasEntity> escola = escolasRepository.findByInformacoesEscola_Cnpj(email);
         Optional<AlunosEntity> aluno = alunosRepository.findByInformacoesPessoais_Cpf(email);
         Optional<ProfessoresEntity> professor = professorRepository.findByInformacoesPessoais_Cpf(email);
         Optional<AdministradorOppoEntity> administradorOppo = admRepository.findByInformacoesPessoais_Cpf(email);
+        if (escola.isPresent() |aluno.isPresent()| professor.isPresent() | administradorOppo.isPresent()  ){
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public Boolean verificarSeContaExistentePeloId(UUID id) throws Exception {
+        Optional<EscolasEntity> escola = escolasRepository.findById(id);
+        Optional<AlunosEntity> aluno = alunosRepository.findById(id);
+        Optional<ProfessoresEntity> professor = professorRepository.findById(id);
+        Optional<AdministradorOppoEntity> administradorOppo = admRepository.findById(id);
         if (escola.isPresent() |aluno.isPresent()| professor.isPresent() | administradorOppo.isPresent()  ){
             return true;
         }

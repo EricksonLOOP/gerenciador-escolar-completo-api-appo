@@ -17,6 +17,7 @@ public class PublishsEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
+    @Embedded
     private AuthorModel author;
     private String content;
     @OneToMany(mappedBy = "publishsEntity", cascade = CascadeType.ALL)

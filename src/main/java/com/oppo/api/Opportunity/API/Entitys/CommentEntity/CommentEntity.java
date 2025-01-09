@@ -13,17 +13,19 @@ import java.util.UUID;
 @Entity
 @Data
 @Builder
+@Embeddable
 public class CommentEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
     private AuthorModel authorModel;
     private String content;
-    @OneToMany(mappedBy = "responses", cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "parent_comment_id")
     private List<CommentEntity> responses;
     private int likes;
     private Date createdAt;
     @ManyToOne
-    @JoinColumn(name = "post_id")
+    @JoinColumn(name = "publishsEntity_id")
     private PublishsEntity publishsEntity;
 }

@@ -94,7 +94,7 @@ public class PubliAuthServiceImpl implements PubliAuthService {
     @Override
     public ResponseEntity<?> createUser(CriarUsuarioModel criarUsuarioModel) {
         try {
-            if (validacoesService.verificarSeContaExistente(criarUsuarioModel.getCpf())){
+            if (validacoesService.verificarSeContaExistentePeloCpf(criarUsuarioModel.getCpf())){
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Já existe uma conta com este email.");
             }
             if (!validacoesService.validarcpf(criarUsuarioModel.getCpf())){
