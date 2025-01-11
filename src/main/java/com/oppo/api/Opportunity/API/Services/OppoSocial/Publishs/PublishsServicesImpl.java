@@ -1,23 +1,22 @@
 package com.oppo.api.Opportunity.API.Services.OppoSocial.Publishs;
 
+import com.oppo.api.Opportunity.API.DTOs.OppoSocial.PostagemDTO.CommentsDTO;
 import com.oppo.api.Opportunity.API.DTOs.OppoSocial.PostagemDTO.CriarPostagemDTO;
+import com.oppo.api.Opportunity.API.DTOs.OppoSocial.PostagemDTO.PostsDTO;
 import com.oppo.api.Opportunity.API.Entitys.PublishsEntity.PublishsEntity;
 import com.oppo.api.Opportunity.API.Models.AuthorModel.AuthorModel;
 import com.oppo.api.Opportunity.API.Repositories.PublishsRepository.PublishsRepository;
 import com.oppo.api.Opportunity.API.Services.OppoManagement.ValidacoesServices.ValidacoesService;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class PublishsServicesImpl implements PublishsServices{
@@ -31,6 +30,7 @@ public class PublishsServicesImpl implements PublishsServices{
     }
 
     @Override
+    @CacheEvict(value = "posts", allEntries = true)
     public ResponseEntity<?> publishPost(CriarPostagemDTO criarPostagemDTO) {
         try{
             if (validacoesService.verificarSeContaExistentePeloId(UUID.fromString(criarPostagemDTO.id()))){
@@ -51,12 +51,41 @@ public class PublishsServicesImpl implements PublishsServices{
 
     @Override
     @Cacheable(value = "posts")
-    public ResponseEntity<?> getpublishs() {
+    public Page<PostsDTO> getpublishs(Pageable pageable) {
         try{
-        List<PublishsEntity> publishsEntities = publishsRepository.findAll();
-        return ResponseEntity.status(HttpStatus.OK).body(publishsEntities);
+            Page<PublishsEntity> postagens  = publishsRepository.findAll(pageable);
+
+        return  postagens.map(post -> PostsDTO.builder()
+                .likes(post.getLikes())
+                .id(post.getId())
+                .content(post.getContent())
+                .createdAt(post.getCreatedAt())
+                .author(new AuthorModel(post.getAuthor().getAuthorID(), post.getAuthor().getAuthorName()))
+                .build());
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao buscar publicações");
+            throw new RuntimeException(e.getCause());
         }
     }
+
+    private List<CommentsDTO> getComments(PublishsEntity post) {
+        List<CommentsDTO> allcomentsFromPost = new ArrayList<>();
+        if (post.getComments().size()>0){
+         post.getComments().forEach(
+                 comment ->{
+                     CommentsDTO newComment = CommentsDTO.builder()
+                             .Id(comment.getId())
+                             .publishID(comment.getId())
+                             .likes(comment.getLikes())
+                             .content(comment.getContent())
+                             .build();
+                     allcomentsFromPost.add(newComment);
+
+                 });
+         return allcomentsFromPost;
+     }
+
+        return Collections.EMPTY_LIST;
+    }
+
+
 }
