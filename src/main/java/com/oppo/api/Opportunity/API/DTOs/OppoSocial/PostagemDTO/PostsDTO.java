@@ -16,7 +16,7 @@ public record PostsDTO (
         @NotNull UUID id,
         @NotNull AuthorModel author,
         @NotNull String content,
-        int likes,
+        List<String> likes,
         @NotNull Date createdAt
 
         ) implements Serializable {

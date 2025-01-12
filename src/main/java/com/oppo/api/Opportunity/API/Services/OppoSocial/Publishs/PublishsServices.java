@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 
 
 public interface PublishsServices {
-    ResponseEntity<?> publishPost(CriarPostagemDTO criarPostagemDTO);
+    ResponseEntity<?> publishPost(CriarPostagemDTO criarPostagemDTO, String myToken);
 
     Page<PostsDTO> getpublishs(Pageable pageable);
 }

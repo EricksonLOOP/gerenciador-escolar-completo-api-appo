@@ -79,7 +79,7 @@ public class JwtUtil {
 
 
     // Extrai as claims do token JWT
-    private Claims parseJwtClaims(String token) {
+   public Claims parseJwtClaims(String token) {
         return jwtParser.parseClaimsJws(token).getBody();
     }
 

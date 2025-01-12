@@ -25,7 +25,7 @@ public class PublishsEntity implements  Serializable {
     private String content;
     @OneToMany(mappedBy = "publishsEntity", cascade = CascadeType.ALL)
     private List<CommentEntity> comments;
-    private int likes;
+    private List<String> likes;
     private Date createdAt;
     PublishsEntity(){
 

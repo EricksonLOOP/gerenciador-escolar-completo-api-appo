@@ -6,7 +6,9 @@ import com.oppo.api.Opportunity.API.DTOs.OppoSocial.PostagemDTO.PostsDTO;
 import com.oppo.api.Opportunity.API.Entitys.PublishsEntity.PublishsEntity;
 import com.oppo.api.Opportunity.API.Models.AuthorModel.AuthorModel;
 import com.oppo.api.Opportunity.API.Repositories.PublishsRepository.PublishsRepository;
+import com.oppo.api.Opportunity.API.SecurityPaths.Auth.JwtUtil;
 import com.oppo.api.Opportunity.API.Services.OppoManagement.ValidacoesServices.ValidacoesService;
+import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -24,26 +26,32 @@ public class PublishsServicesImpl implements PublishsServices{
     private  final PublishsRepository publishsRepository;
     @Autowired
     private  final ValidacoesService validacoesService;
-    public PublishsServicesImpl(PublishsRepository publishsRepository, ValidacoesService validacoesService) {
+    @Autowired
+    private final JwtUtil jwtUtil;
+    public PublishsServicesImpl(PublishsRepository publishsRepository, ValidacoesService validacoesService, JwtUtil jwtUtil) {
         this.publishsRepository = publishsRepository;
         this.validacoesService = validacoesService;
+        this.jwtUtil = jwtUtil;
     }
 
     @Override
     @CacheEvict(value = "posts", allEntries = true)
-    public ResponseEntity<?> publishPost(CriarPostagemDTO criarPostagemDTO) {
+    public ResponseEntity<?> publishPost(CriarPostagemDTO criarPostagemDTO, String myToken) {
         try{
-            if (validacoesService.verificarSeContaExistentePeloId(UUID.fromString(criarPostagemDTO.id()))){
+            Claims myUser = jwtUtil.parseJwtClaims(myToken);
+            if (myUser.isEmpty()){
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Inválid Token.");
+            }
+
                 PublishsEntity newPublish = PublishsEntity.builder()
                         .id(UUID.randomUUID())
-                        .author(new AuthorModel(UUID.fromString(criarPostagemDTO.id()), criarPostagemDTO.name()))
+                        .author(new AuthorModel(UUID.fromString(myUser.get("id").toString()), myUser.get("nome").toString()))
                         .content(criarPostagemDTO.content())
                         .createdAt(new Date())
                         .build();
                 publishsRepository.save(newPublish);
                 return ResponseEntity.status(HttpStatus.CREATED).body("Postagem criada com sucesso!");
-            }
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Ação inválida");
+
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro interno ao tentar relizar postagem. message: "+e.getCause());
         }

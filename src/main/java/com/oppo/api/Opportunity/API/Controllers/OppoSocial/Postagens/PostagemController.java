@@ -3,6 +3,7 @@ package com.oppo.api.Opportunity.API.Controllers.OppoSocial.Postagens;
 import com.oppo.api.Opportunity.API.DTOs.OppoSocial.PostagemDTO.CriarPostagemDTO;
 import com.oppo.api.Opportunity.API.DTOs.OppoSocial.PostagemDTO.PostsDTO;
 import com.oppo.api.Opportunity.API.Services.OppoSocial.Publishs.PublishsServices;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -24,8 +25,14 @@ public class PostagemController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<?> criarPostagem(@RequestBody CriarPostagemDTO criarPostagemDTO){
-        return publishsServices.publishPost(criarPostagemDTO);
+    public ResponseEntity<?> criarPostagem(@RequestBody CriarPostagemDTO criarPostagemDTO, HttpServletRequest request){
+        String myToken = request.getHeader("Authorization");
+
+        if (myToken != null && myToken.startsWith("Bearer ")){
+            String token = myToken.substring(7);
+            return publishsServices.publishPost(criarPostagemDTO, token);
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Sem token");
     }
     @GetMapping("/publishes")
     public ResponseEntity<?> resgatarPostagens(@RequestParam(value = "page", defaultValue = "0") int page){
