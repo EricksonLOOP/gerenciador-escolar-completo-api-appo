@@ -1,5 +1,5 @@
 # <div align="center">Oppo API V1.0.1</div>
-
+<strong>ESTE PROJETO FOI DESCONTINUADO HÁ UM TEMPO</strong>
 ## <div align="center">Gestão Escolar Completa e Efetiva</div>
 
 ### <h2>Descrição</h2>
