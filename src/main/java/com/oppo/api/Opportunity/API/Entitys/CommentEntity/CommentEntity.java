@@ -23,7 +23,7 @@ public class CommentEntity {
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "parent_comment_id")
     private List<CommentEntity> responses;
-    private int likes;
+    private List<String> likes;
     private Date createdAt;
     @ManyToOne
     @JoinColumn(name = "publishsEntity_id")

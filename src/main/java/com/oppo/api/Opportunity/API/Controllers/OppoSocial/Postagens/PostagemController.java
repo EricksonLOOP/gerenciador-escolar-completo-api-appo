@@ -1,5 +1,6 @@
 package com.oppo.api.Opportunity.API.Controllers.OppoSocial.Postagens;
 
+import com.oppo.api.Opportunity.API.DTOs.OppoSocial.PostagemDTO.CommentsDTO;
 import com.oppo.api.Opportunity.API.DTOs.OppoSocial.PostagemDTO.CriarPostagemDTO;
 import com.oppo.api.Opportunity.API.DTOs.OppoSocial.PostagemDTO.PostsDTO;
 import com.oppo.api.Opportunity.API.Services.OppoSocial.Publishs.PublishsServices;
@@ -13,13 +14,17 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @RestController
 @RequestMapping("api/social")
 public class PostagemController {
     @Autowired
     private final PublishsServices publishsServices;
     @Autowired
-    private PagedResourcesAssembler<PostsDTO> pagedResourcesAssembler;
+    private PagedResourcesAssembler<PostsDTO> pagedPostResourcesAssembler;
+    @Autowired
+    private PagedResourcesAssembler<CommentsDTO> pagedCommentResourcesAssembler;
     public PostagemController(PublishsServices publishsServices) {
         this.publishsServices = publishsServices;
     }
@@ -34,9 +39,37 @@ public class PostagemController {
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Sem token");
     }
+    @PostMapping("/add/comment/{id}")
+    public ResponseEntity<?> adicionarComentario(@RequestBody String content, HttpServletRequest request, @PathVariable("id") UUID postId){
+        String myToken = request.getHeader("Authorization");
+
+        if (myToken != null && myToken.startsWith("Bearer ")){
+            String token = myToken.substring(7);
+            return publishsServices.addComment(postId, myToken, content);
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Sem token");
+    }
+    @PostMapping("/add/like/{id}")
+    public ResponseEntity<?> adicionarLike(@PathVariable("id") UUID id, HttpServletRequest request){
+        String myToken = request.getHeader("Authorization");
+
+        if (myToken != null && myToken.startsWith("Bearer ")){
+            String token = myToken.substring(7);
+            return publishsServices.addLike(id, token);
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Sem token");
+    }
     @GetMapping("/publishes")
     public ResponseEntity<?> resgatarPostagens(@RequestParam(value = "page", defaultValue = "0") int page){
         Pageable pageable = PageRequest.of(page, 10, Sort.by(Sort.Direction.DESC, "createdAt"));
-        return ResponseEntity.status(HttpStatus.OK).body(pagedResourcesAssembler.toModel(publishsServices.getpublishs(pageable)));
+        return ResponseEntity.status(HttpStatus.OK).body(pagedPostResourcesAssembler.toModel(publishsServices.getPosts(pageable)));
+    }
+    @GetMapping("/post/{id}/comments")
+    public ResponseEntity<?> resgatarComentarios(
+            @PathVariable("id") UUID idPost,
+            @RequestParam(value = "page", defaultValue = "0") int page){
+        Pageable pageable = PageRequest.of(page, 10, Sort.by(Sort.Direction.DESC, "createdAt"));
+        return ResponseEntity.status(HttpStatus.OK).body(pagedCommentResourcesAssembler.toModel(publishsServices.getPostComments(idPost, pageable)));
+
     }
 }

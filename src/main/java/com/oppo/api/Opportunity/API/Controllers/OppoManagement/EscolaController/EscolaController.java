@@ -29,11 +29,6 @@ public class EscolaController {
     public ResponseEntity<?> updateEscola(@PathVariable("id") UUID id, @RequestBody CriarEscolasDTO criarEscolasDTO){
         return  escolaServices.update(criarEscolasDTO);
     }
-    @GetMapping("/alunos/listar/{idEscola}")
-    public ResponseEntity<?> listarAluno(@PathVariable("idEscola") UUID escola){
-        return escolaServices.listarAlunos(escola);
-    }
-
 
     @PostMapping("/{idEscola}/aluno/{idAluno}")
     public ResponseEntity<?> addAluno(

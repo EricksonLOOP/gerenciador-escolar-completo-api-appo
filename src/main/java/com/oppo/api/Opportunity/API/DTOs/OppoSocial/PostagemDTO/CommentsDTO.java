@@ -13,8 +13,8 @@ public record CommentsDTO (
         @NotNull UUID Id,
         @NotNull AuthorModel author,
         @NotNull String content,
-        List<CommentsDTO> responses,
-        int likes,
+        int responses,
+        List<String> likes,
         Date createdAt,
         UUID publishID
         ) implements Serializable {
